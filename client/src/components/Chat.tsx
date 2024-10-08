@@ -1,7 +1,13 @@
 import React from 'react';
 import '../Chat.css';
+import io from 'socket.io-client';
 
+const socket = io.connect("http://localhost:3000");
 const Chat = () => {
+    const sendMessage = () => {
+        // socket.emit();
+    };
+
     return (
         <div className="chat-w">
             <div className="chat-goat">
@@ -20,7 +26,7 @@ const Chat = () => {
 
                 <div className="chat-br">
                     <input type="text" className="chat-in" placeholder="Type something..." />
-                    <button className="chat-send">
+                    <button className="chat-send" onClick={sendMessage}>
                         <img src="chat-submit.svg" alt="Send" />
                     </button>
                 </div>
