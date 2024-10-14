@@ -15,6 +15,10 @@ const io = new Server(httpServer, {
     }
 });
 
+io.on("connection", (socket) => {
+    console.log(`User connected: ${socket.id}`);
+})
+
 httpServer.listen(port, () => {
     console.log('Server is running on port ' + port);
 })
