@@ -1,27 +1,33 @@
+// dotenv INIT
 require("dotenv").config();
 
+// app INIT
 const cookieParser = require("cookie-parser");
 const express = require('express');
 const pairOuImpairRouter = require('./routes/pairOuImpair.js');
 const loginRouter = require('./routes/login.js');
 const logoutRouter = require('./routes/logout.js');
 
-const app = express();
+// app server INIT
+const server = express();
 const port = 3000;
 
-// Jetbrains Mono typo
+// use express-json and cookieParser
+server.use(express.json());
+server.use(cookieParser());
 
-app.use(express.json());
-app.use(cookieParser());
-
-app.get('/', (req, res) => {
+// Routes INIT
+server.get('/', (req, res) => {
     res.send("Hello World")
 });
 
-app.use(pairOuImpairRouter);
-app.use(loginRouter);
-app.use(logoutRouter);
+server.use(pairOuImpairRouter);
+server.use(loginRouter);
+server.use(logoutRouter);
 
-app.listen(port, () => {
+// Socket.io
+
+
+server.listen(port, () => {
     console.log(`API listening on http://localhost:${port}`);
 })
