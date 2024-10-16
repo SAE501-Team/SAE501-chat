@@ -1,6 +1,6 @@
 const express = require('express');
 const users = require('../data/users.json');
-const { generateToken } = require('../utils/generateToken');
+const { generateToken } = require('../utils/token/generateToken');
 
 const router = express.Router();
 
