@@ -12,7 +12,7 @@ const { generateToken } = require("../utils/token/generateToken.js");
         id (prestashop)
         username (prestashop)
         email (prestashop)
-        password (prestashop)
+        passwd (prestashop)
     }
 */
 router.post("/api/register", async (req, res) => {

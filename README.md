@@ -4,6 +4,8 @@ To make everything work fine, check the .env-template file and add your configur
 
 After that, go to server/assets/behhchat-module and change the server that it is aiming to your API server IP.
 
+And after that go to client/components/Chat.jsx to change the url of the Express server.
+
 ### What I needed to do to make this work
 
 - Create a ExpressJS server to make API calls

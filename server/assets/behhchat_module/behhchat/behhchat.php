@@ -21,9 +21,18 @@ class BehhChat extends Module
 
     public function install()
     {
-        return parent::install() && $this->registerHook('actionCustomerAccountAdd') && $this->registerHook('actionAuthentication');
+        return parent::install() && 
+               $this->registerHook('actionCustomerAccountAdd') && 
+               $this->registerHook('actionAuthentication');
+    }
+    
+
+    public function uninstall()
+    {
+        return parent::uninstall();
     }
 
+    // Send data to express
     private function sendDataToExpress($data, $endpoint)
     {
         $url = $this->apiurl . $endpoint;
@@ -40,6 +49,7 @@ class BehhChat extends Module
         file_get_contents($url, false, $context);
     }
 
+    // Register
     public function hookActionCustomerAccountAdd($params)
     {
         $customer = $params['newCustomer'];
@@ -54,13 +64,14 @@ class BehhChat extends Module
         $this->sendDataToExpress($data, 'api/register');
     }
 
+    // Login
     public function hookActionAuthentication($params)
 {
     $customer = $params['customer'];
     
     $data = [
         'username' => $customer->firstname,
-        'password' => $customer->passwd, // ou utilise un champ spécifique
+        'password' => $customer->passwd,
     ];
     
     $this->sendDataToExpress($data, 'api/login');

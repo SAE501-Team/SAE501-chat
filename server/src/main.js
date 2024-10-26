@@ -16,7 +16,7 @@ const cors = require("cors");
 
 // Routes INIT
 const registerRouter = require("./routes/register.js");
-// const loginRouter = require('./routes/login.js');
+const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
 const deleteRouter = require("./routes/delete.js");
 
@@ -45,7 +45,7 @@ app.post("/api/", (req, res) => {
 });
 
 app.use(registerRouter); // Route register compte
-// app.use(loginRouter); // Route login compte
+app.use(loginRouter); // Route login compte
 app.use(logoutRouter); // Route logout compte
 app.use(deleteRouter); // Route delete compte
 
