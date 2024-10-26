@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../utils/db/databaseInit.js");
+const { generateToken } = require("../utils/token/generateToken.js");
 
 /*
     Enregistre un utilisateur dans la base de donnée
@@ -14,12 +15,25 @@ const database = require("../utils/db/databaseInit.js");
 */
 router.post("/register", async (req, res) => {
   const { id, username, email } = req.body;
+  const user = { id, username };
+  const idToken = generateToken(user, res);
 
   try {
     // Enregistre l'utilisateur dans la bdd du chat
+    // Vérifie si l'utilisateur existe déjà dans la bdd du chat
+    const existingUser = await database.query(
+      "SELECT * FROM user WHERE id = ?",
+      [idToken]
+    );
+
+    if (existingUser.length > 0) {
+      throw new Error("L'utilisateur existe déjà dans la base de données.");
+    }
+
+    // Enregistre l'utilisateur dans la bdd du chat
     await database.query(
       "INSERT INTO user (id, username, email) VALUES (?, ?, ?)",
-      [id, username, email]
+      [idToken, username, email]
     );
 
     return res.json({
