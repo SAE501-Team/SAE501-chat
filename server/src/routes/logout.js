@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.post('/logout', (req, res) => {
+router.post('/api/logout', (req, res) => {
     // Efface le cookie TOKEN
     res.clearCookie('TOKEN');
 

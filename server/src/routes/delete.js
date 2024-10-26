@@ -12,7 +12,7 @@ const database = require("../utils/db/databaseInit.js");
         username (prestashop)
     }
 */
-router.post("/delete", async (req, res) => {
+router.post("/api/delete", async (req, res) => {
   const { id } = req.body;
 
   try {

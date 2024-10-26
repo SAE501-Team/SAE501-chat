@@ -11,22 +11,20 @@ const { generateToken } = require("../utils/token/generateToken.js");
     Body {
         id (prestashop)
         username (prestashop)
+        email (prestashop)
+        password (prestashop)
     }
 */
-router.post("/register", async (req, res) => {
+router.post("/api/register", async (req, res) => {
   const { id, username, email, password } = req.body;
-  const user = { id, username };
-  const idToken = generateToken(user, res);
+  const [userData] = await database.query("SELECT * FROM user WHERE id = ?", [
+    id,
+  ]);
+  const idToken = generateToken({ id, username }, res);
 
   try {
-    // Enregistre l'utilisateur dans la bdd du chat
-    // Vérifie si l'utilisateur existe déjà dans la bdd du chat
-    const existingUser = await database.query(
-      "SELECT * FROM user WHERE id = ?",
-      [idToken]
-    );
-
-    if (existingUser.length > 0) {
+    // Verifie si l'utilisateur existe déjà dans la bdd
+    if (userData && userData.length > 0) {
       throw new Error("L'utilisateur existe déjà dans la base de données.");
     }
 

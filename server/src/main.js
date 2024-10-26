@@ -38,7 +38,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes INIT
-app.post("/", (req, res) => {
+app.post("/api/", (req, res) => {
   return res.json({
     message: "Bienvenue sur le serveur de messagerie socket.io !",
   });
