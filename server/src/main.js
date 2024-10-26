@@ -64,6 +64,7 @@ const io = new Server(server, {
 // Socket.io
 io.on("connection", (socket) => {
   console.log("Un utilisateur est connecté");
+  console.log(socket);
 
   socket.on("message", (msg) => {
     console.log("Message reçu :", msg);
