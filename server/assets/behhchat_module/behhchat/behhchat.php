@@ -5,6 +5,8 @@ if (!defined('_PS_VERSION_')) {
 
 class BehhChat extends Module
 {
+    public $apiurl = 'http://localhost:3000/';
+
     public function __construct()
     {
         $this->name = 'behhchat';
@@ -22,9 +24,9 @@ class BehhChat extends Module
         return parent::install() && $this->registerHook('actionCustomerAccountAdd') && $this->registerHook('actionAuthentication');
     }
 
-    private function sendDataToExpress($data)
+    private function sendDataToExpress($data, $endpoint)
     {
-        $url = 'http://localhost:3000/api/register';
+        $url = $this->apiurl . $endpoint;
 
         $options = [
             'http' => [
@@ -49,7 +51,7 @@ class BehhChat extends Module
             'password' => $customer->passwd,
         ];
 
-        $this->sendDataToExpress($data);
+        $this->sendDataToExpress($data, 'api/register');
     }
 
     public function hookActionAuthentication($params)
@@ -61,6 +63,6 @@ class BehhChat extends Module
         'password' => $customer->passwd, // ou utilise un champ spécifique
     ];
     
-    $this->sendDataToExpress($data);
+    $this->sendDataToExpress($data, 'api/login');
 }
 }
