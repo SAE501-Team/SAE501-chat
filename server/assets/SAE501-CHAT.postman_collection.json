@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:3000/",
+			"name": "http://localhost:3000/api/",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -21,13 +21,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/",
+					"raw": "http://localhost:3000/api/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"api",
 						""
 					]
 				}
@@ -35,7 +36,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/register",
+			"name": "http://localhost:3000/api/register",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -49,13 +50,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/register",
+					"raw": "http://localhost:3000/api/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"api",
 						"register"
 					]
 				}
@@ -63,7 +65,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/login",
+			"name": "http://localhost:3000/api/login",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -77,13 +79,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/login",
+					"raw": "http://localhost:3000/api/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"api",
 						"login"
 					]
 				}
@@ -91,7 +94,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/logout",
+			"name": "http://localhost:3000/api/logout",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -105,13 +108,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/logout",
+					"raw": "http://localhost:3000/api/logout",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"api",
 						"logout"
 					]
 				}
@@ -119,7 +123,7 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:3000/delete",
+			"name": "http://localhost:3000/api/delete",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -133,13 +137,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3000/delete",
+					"raw": "http://localhost:3000/api/delete",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
+						"api",
 						"delete"
 					]
 				}
