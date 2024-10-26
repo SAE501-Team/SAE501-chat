@@ -7,20 +7,20 @@ const router = express.Router();
 /*
     Supprime un utilisateur dans la base de donnée
 
-    TODO: Faire que les consoles logs se montrent quand on se login dans le Presta
+    Interconnection entre PrestaShop et le chat
 
     Body {
-        firstname (prestashop)
+        email (prestashop)
         passwd (prestashop)
     }
 */
 router.post("/api/login", async (req, res) => {
-  const firstname = req.body["username"];
+  const email = req.body["email"];
   const password = req.body["password"];
 
   const [userData] = await database.query(
-    "SELECT * FROM user WHERE username = ? AND password = ?",
-    [firstname, password]
+    "SELECT * FROM user WHERE email = ? AND password = ?",
+    [email, password]
   );
 
   if (userData.length === 0 || !userData) {
@@ -31,7 +31,7 @@ router.post("/api/login", async (req, res) => {
   } else {
     storeToken(userData, res);
 
-    console.log("username:", firstname);
+    console.log("username:", email);
     console.log("password:", password);
 
     console.log("userData:", userData);

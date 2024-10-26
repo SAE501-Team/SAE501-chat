@@ -32,7 +32,7 @@ class BehhChat extends Module
         return parent::uninstall();
     }
 
-    // Send data to express
+    // Send data to express API call
     private function sendDataToExpress($data, $endpoint)
     {
         $url = $this->apiurl . $endpoint;
@@ -70,7 +70,7 @@ class BehhChat extends Module
     $customer = $params['customer'];
     
     $data = [
-        'username' => $customer->firstname,
+        'email' => $customer->email,
         'password' => $customer->passwd,
     ];
     

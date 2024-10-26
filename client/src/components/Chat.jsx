@@ -8,6 +8,10 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
+  // TODO: Faudra faire que le chat soit relié à la base de donnée pour que les messages soient enregistrés
+  // TODO: Faudra aussi faire quand on land sur la page de chat, ça crée un chat avec un id unique (room) avec les informations du ticket uqi a été rentrée par l'utilisateur à l'étape d'avant etc...
+  // TODO: Faudra faire que côté Admin, il puisse voir les rooms des utilisateurs et répondre à ces messages (donc interface différente de l'utilisateur)
+
   useEffect(() => {
     // Listener pour les nouveaux messages
     socket.on("message", (newMessage) => {
