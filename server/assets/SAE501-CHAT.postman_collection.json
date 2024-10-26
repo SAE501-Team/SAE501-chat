@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": \"1\",\r\n    \"username\": \"Alice\",\r\n    \"email\": \"alice@gmail.com\"\r\n}",
+					"raw": "{\r\n    \"id\": \"1\",\r\n    \"username\": \"Alice\",\r\n    \"email\": \"alice@gmail.com\",\r\n    \"password\": \"mdp\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

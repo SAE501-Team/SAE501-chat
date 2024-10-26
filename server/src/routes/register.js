@@ -14,7 +14,7 @@ const { generateToken } = require("../utils/token/generateToken.js");
     }
 */
 router.post("/register", async (req, res) => {
-  const { id, username, email } = req.body;
+  const { id, username, email, password } = req.body;
   const user = { id, username };
   const idToken = generateToken(user, res);
 
@@ -32,8 +32,8 @@ router.post("/register", async (req, res) => {
 
     // Enregistre l'utilisateur dans la bdd du chat
     await database.query(
-      "INSERT INTO user (id, username, email) VALUES (?, ?, ?)",
-      [idToken, username, email]
+      "INSERT INTO user (id, username, email, password) VALUES (?, ?, ?, ?)",
+      [idToken, username, email, password]
     );
 
     return res.json({
