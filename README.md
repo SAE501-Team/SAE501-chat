@@ -11,3 +11,4 @@ After that, go to server/assets/behhchat-module and change the server that it is
 - Create a MySQL database to store and communicate
 - Create a PrestaShop module to make the API calls
 - Securize the chat app and the database
+- Make a shell script to automate the installation
