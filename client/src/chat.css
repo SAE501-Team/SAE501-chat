@@ -1,125 +1,125 @@
 .chat-w {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    position: relative;
-    margin-top: 10vh;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 10vh;
 }
 
 .chat-show {
-    background: linear-gradient(0deg, #7baaf7, #ff4081);
-    border-radius: 30px;
-    position: relative;
+  background: linear-gradient(0deg, #7baaf7, #ff4081);
+  border-radius: 30px;
+  position: relative;
 }
 
 .chat-goat {
-    position: absolute;
-    top: -16%;
-    left: 50%;
+  position: absolute;
+  top: -16%;
+  left: 50%;
 }
 
 .chat-goat img {
-    width: 80px;
-    height: 80px;
+  width: 120px;
+  height: auto;
 }
 
 .goat2 {
-    position: absolute;
-    bottom: -20%;
-    right: 10%;
-    z-index: 3;
+  position: absolute;
+  bottom: -10%;
+  right: 10%;
+  z-index: 3;
 }
 
 .goat2 img {
-    width: 60px;
-    height: 60px;
+  width: 85px;
+  height: auto;
 }
 
 .chat-area {
-    height: 60vh;
-    padding: 3px;
-    overflow-y: hidden;
+  height: 60vh;
+  padding: 3px;
+  overflow-y: hidden;
 }
 
 .chat-text {
-    background-color: #fff;
-    border-radius: 25px;
-    height: 105%;
-    padding: 10px;
-    overflow-y: auto;
-    padding-right: 15px;
-    padding-left: 15px;
+  background-color: #fff;
+  border-radius: 25px;
+  height: 105%;
+  padding: 10px;
+  overflow-y: auto;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 .chat-text::-webkit-scrollbar {
-    width: 5px;
+  width: 5px;
 }
 
 .chat-text::-webkit-scrollbar-track {
-    background: #fafafa;
-    border-radius: 10px;
+  background: #fafafa;
+  border-radius: 10px;
 }
 
 .chat-text::-webkit-scrollbar-thumb {
-    border-radius: 10px;
+  border-radius: 10px;
 }
 
 .chat-br {
-    position: relative;
-    padding: 3px;
-    background: linear-gradient(0deg, #7baaf7, #ff4081);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
+  position: relative;
+  padding: 3px;
+  background: linear-gradient(0deg, #7baaf7, #ff4081);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
 }
 
 .chat-in {
-    border: none;
-    outline: none;
-    padding: 15px 60px 15px 20px;
-    border-radius: 50px;
-    background-color: white;
-    font-size: 16px;
-    width: 100%;
+  border: none;
+  outline: none;
+  padding: 15px 60px 15px 20px;
+  border-radius: 50px;
+  background-color: white;
+  font-size: 16px;
+  width: 100%;
 }
 
 .chat-in:focus {
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
 
 .chat-send {
-    position: absolute;
-    right: 0px;
-    border: none;
-    background: linear-gradient(0deg, #7baaf7, #ff4081);
-    border-radius: 50%;
-    width: 52px;
-    height: 52px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: ease 0.1s;
+  position: absolute;
+  right: 0px;
+  border: none;
+  background: linear-gradient(0deg, #7baaf7, #ff4081);
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: ease 0.1s;
 }
 
 .chat-send:active {
-    scale: 0.9;
+  scale: 0.9;
 }
 
 .chat-send img {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 375px) {
-    .chat-goat {
-        position: absolute;
-        top: -15%;
-        left: 50%;
-    }
+  .chat-goat {
+    position: absolute;
+    top: -15%;
+    left: 50%;
+  }
 
-    .goat2 {
-        bottom: -10%;
-        right: 10%;
-    }
+  .goat2 {
+    bottom: -10%;
+    right: 10%;
+  }
 }

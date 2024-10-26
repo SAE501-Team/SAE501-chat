@@ -1,8 +1,8 @@
 // dotenv INIT
 require("dotenv").config();
 
-console.log("CLIENTURL:", process.env.CLIENTURL);
-console.log("SERVERURL:", process.env.SERVERURL);
+console.log("REACT:", process.env.CLIENTURL);
+console.log("EXPRESS:", process.env.SERVERURL);
 
 // Socket.io INIT
 const { Server } = require("socket.io");
