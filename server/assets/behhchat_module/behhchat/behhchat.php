@@ -24,7 +24,7 @@ class BehhChat extends Module
         return parent::install() && 
                $this->registerHook('actionCustomerAccountAdd') && 
                $this->registerHook('actionAuthentication') &&
-               $this->registerHook('actionCustomerAccountLogout');
+               $this->registerHook('actionCustomerLogoutAfter');
     }
     
 
@@ -50,7 +50,7 @@ class BehhChat extends Module
 
         try {
             $response = file_get_contents($url, false, $context);
-            
+
             PrestaShopLogger::addLog('Response from API: ' . $response, 1);
         } catch (Exception $e) {
             PrestaShopLogger::addLog('API call failed: ' . $e->getMessage(), 3);
@@ -70,7 +70,6 @@ class BehhChat extends Module
         ];
 
         $this->sendDataToExpress($data, 'api/register');
-        $this->hookActionAuthentication($params);
     }
 
     // Login
@@ -87,18 +86,15 @@ class BehhChat extends Module
     }
 
     // Logout
-    public function hookActionCustomerAccountLogout($params)
+    public function hookActionCustomerLogoutAfter($params)
     {
-        // Vérifie si le client est chargé
-        if (isset($params['customer']) && Validate::isLoadedObject($params['customer'])) {
-            $customer = $params['customer'];
+        $customer = $params['customer'];
     
-            $data = [
-                'email' => $customer->email, // Email de l'utilisateur
-            ];
+        $data = [
+           'email' => $customer->email, // Email de l'utilisateur
+        ];
     
-            // Envoie une requête à l'API pour gérer la déconnexion
-            $this->sendDataToExpress($data, 'api/logout');
-        }
+        // Envoie une requête à l'API pour gérer la déconnexion
+        $this->sendDataToExpress($data, 'api/logout');
     }
 }

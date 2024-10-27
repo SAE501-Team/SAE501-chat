@@ -34,6 +34,12 @@ router.post("/api/register", async (req, res) => {
       [idToken, username, email, password]
     );
 
+    // Mets en ligne l'utilisateur dans la base de donnée
+    await database.query(
+      "UPDATE user SET isOnline = 1 WHERE email = ? AND password = ?",
+      [email, password]
+    );
+
     return res.json({
       success: true,
       message: `Félicitations ${username}, vous êtes enregistré !`,
