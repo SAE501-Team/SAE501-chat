@@ -5,7 +5,7 @@ const database = require("../utils/db/databaseInit.js");
 const router = express.Router();
 
 /*
-    Supprime un utilisateur dans la base de donnée
+    Connecte un utilisateur
 
     Interconnection entre PrestaShop et le chat
 
@@ -29,12 +29,18 @@ router.post("/api/login", async (req, res) => {
       message: "Nom d'utilisateur et/ou le mot de passe incorrect(s).",
     });
   } else {
+    // Mets en ligne l'utilisateur dans la base de donnée
+    await database.query(
+      "UPDATE user SET isOnline = 1 WHERE email = ? AND password = ?",
+      [email, password]
+    );
+
     storeToken(userData, res);
 
-    console.log("username:", email);
-    console.log("password:", password);
+    // console.log("username:", email);
+    // console.log("password:", password);
 
-    console.log("userData:", userData);
+    // console.log("userData:", userData);
 
     return res.json({
       success: true,

@@ -23,7 +23,8 @@ class BehhChat extends Module
     {
         return parent::install() && 
                $this->registerHook('actionCustomerAccountAdd') && 
-               $this->registerHook('actionAuthentication');
+               $this->registerHook('actionAuthentication') &&
+               $this->registerHook('actionCustomerAccountLogout');
     }
     
 
@@ -46,7 +47,14 @@ class BehhChat extends Module
         ];
         
         $context = stream_context_create($options);
-        file_get_contents($url, false, $context);
+
+        try {
+            $response = file_get_contents($url, false, $context);
+            
+            PrestaShopLogger::addLog('Response from API: ' . $response, 1);
+        } catch (Exception $e) {
+            PrestaShopLogger::addLog('API call failed: ' . $e->getMessage(), 3);
+        }
     }
 
     // Register
@@ -62,18 +70,35 @@ class BehhChat extends Module
         ];
 
         $this->sendDataToExpress($data, 'api/register');
+        $this->hookActionAuthentication($params);
     }
 
     // Login
     public function hookActionAuthentication($params)
-{
-    $customer = $params['customer'];
+    {
+        $customer = $params['customer'];
     
-    $data = [
-        'email' => $customer->email,
-        'password' => $customer->passwd,
-    ];
+        $data = [
+            'email' => $customer->email,
+            'password' => $customer->passwd,
+        ];
     
-    $this->sendDataToExpress($data, 'api/login');
-}
+        $this->sendDataToExpress($data, 'api/login');
+    }
+
+    // Logout
+    public function hookActionCustomerAccountLogout($params)
+    {
+        // Vérifie si le client est chargé
+        if (isset($params['customer']) && Validate::isLoadedObject($params['customer'])) {
+            $customer = $params['customer'];
+    
+            $data = [
+                'email' => $customer->email, // Email de l'utilisateur
+            ];
+    
+            // Envoie une requête à l'API pour gérer la déconnexion
+            $this->sendDataToExpress($data, 'api/logout');
+        }
+    }
 }

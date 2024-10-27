@@ -67,20 +67,14 @@ io.on("connection", (socket) => {
 
   socket.on("message", (msg) => {
     console.log("Message reçu :", msg);
-    // Enregistremeent du message dans la base de données
+
+    // Todo: Enregistrement du message dans la base de données
   });
 
   socket.on("disconnect", () => {
     console.log("Un utilisateur est déconnecté");
   });
 });
-
-// Récupérer et afficher les tables de la base de données
-// const [tables] = await database.query("SHOW TABLES");
-// console.log("Tables dans la base de données :");
-// tables.forEach(table => {
-//     console.log(Object.values(table)[0]); // Affiche le nom de chaque table
-// });
 
 // Démarrer le serveur HTTP
 server.listen(PORT, () => {

@@ -11,6 +11,7 @@ const Chat = () => {
   // TODO: Faudra faire que le chat soit relié à la base de donnée pour que les messages soient enregistrés
   // TODO: Faudra aussi faire quand on land sur la page de chat, ça crée un chat avec un id unique (room) avec les informations du ticket uqi a été rentrée par l'utilisateur à l'étape d'avant etc...
   // TODO: Faudra faire que côté Admin, il puisse voir les rooms des utilisateurs et répondre à ces messages (donc interface différente de l'utilisateur)
+  // TODO: Faire une verification avec une requete sur le express pour qu'avant de chatter, l'utilisateur soit bien connecté, si il est pas connecté, requete API pour le connecter
 
   useEffect(() => {
     // Listener pour les nouveaux messages
