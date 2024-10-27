@@ -27,7 +27,6 @@ class BehhChat extends Module
                $this->registerHook('actionCustomerLogoutAfter');
     }
     
-
     public function uninstall()
     {
         return parent::uninstall();
@@ -48,6 +47,7 @@ class BehhChat extends Module
         
         $context = stream_context_create($options);
 
+        // Try/Catch to handle API call errors
         try {
             $response = file_get_contents($url, false, $context);
 
