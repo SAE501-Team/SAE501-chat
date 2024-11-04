@@ -5,7 +5,7 @@ if (!defined('_PS_VERSION_')) {
 
 class BehhChat extends Module
 {
-    public $apiurl = 'http://localhost:3000/';
+    public $apiurl = 'http://host.docker.internal:3000/';
 
     public function __construct()
     {
