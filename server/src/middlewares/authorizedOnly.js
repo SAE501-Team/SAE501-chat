@@ -1,30 +1,28 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const SECRET = process.env.SECRET;
 
 function authorizedOnly(req, res, next) {
-    const token = req.cookies["TOKEN"];
+  const token = req.cookies["TOKEN"];
 
-    console.log(token);
+  console.log(token);
 
-    try {
-        const decoded = jwt.decode(token, SECRET);
+  try {
+    const decoded = jwt.decode(token, SECRET);
 
-        req.user = {
-            id: decoded.userId,
-            name: decoded.username
-        }
+    req.user = {
+      id: decoded.userId,
+      name: decoded.username,
+    };
+  } catch (error) {
+    console.log(error);
 
-    } catch (error) {
+    return res.status(401).json({
+      success: false,
+      message: "Vous devez être authentifié pour accéder à cette ressource",
+    });
+  }
 
-        console.log(error);
-
-        return res.status(401).json({
-            success: false,
-            message: "Vous devez être authentifié pour accéder à cette ressource"
-        })
-    }
-
-    next();
+  next();
 }
 
 exports.authorizedOnly = authorizedOnly;

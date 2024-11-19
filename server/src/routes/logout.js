@@ -26,7 +26,7 @@ router.post("/api/logout", async (req, res) => {
   try {
     // Mettre à jour le statut de l'utilisateur dans la base de données
     const result = await database.query(
-      "UPDATE user SET isOnline = 0 WHERE email = ?",
+      "UPDATE users SET isOnline = 0 WHERE email = ?",
       [email]
     );
 

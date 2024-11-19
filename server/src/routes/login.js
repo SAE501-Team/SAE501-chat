@@ -19,7 +19,7 @@ router.post("/api/login", async (req, res) => {
   const password = req.body["password"];
 
   const [userData] = await database.query(
-    "SELECT * FROM user WHERE email = ? AND password = ?",
+    "SELECT * FROM users WHERE email = ? AND password = ?",
     [email, password]
   );
 
@@ -31,16 +31,13 @@ router.post("/api/login", async (req, res) => {
   } else {
     // Mets en ligne l'utilisateur dans la base de donnée
     await database.query(
-      "UPDATE user SET isOnline = 1 WHERE email = ? AND password = ?",
+      "UPDATE users SET isOnline = 1 WHERE email = ? AND password = ?",
       [email, password]
     );
 
     storeToken(userData, res);
 
-    // console.log("username:", email);
-    // console.log("password:", password);
-
-    // console.log("userData:", userData);
+    console.log(storeToken(userData, res));
 
     return res.json({
       success: true,

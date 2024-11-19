@@ -17,10 +17,12 @@ const { generateToken } = require("../utils/token/generateToken.js");
 */
 router.post("/api/register", async (req, res) => {
   const { id, username, email, password } = req.body;
-  const [userData] = await database.query("SELECT * FROM user WHERE id = ?", [
+  const [userData] = await database.query("SELECT * FROM users WHERE id = ?", [
     id,
   ]);
-  const idToken = generateToken({ id, username }, res);
+  const idToken = id;
+
+  console.log("idToken: ", idToken);
 
   try {
     // Verifie si l'utilisateur existe déjà dans la bdd
@@ -30,13 +32,13 @@ router.post("/api/register", async (req, res) => {
 
     // Enregistre l'utilisateur dans la bdd du chat
     await database.query(
-      "INSERT INTO user (id, username, email, password) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (id, username, email, password) VALUES (?, ?, ?, ?)",
       [idToken, username, email, password]
     );
 
     // Mets en ligne l'utilisateur dans la base de donnée
     await database.query(
-      "UPDATE user SET isOnline = 1 WHERE email = ? AND password = ?",
+      "UPDATE users SET isOnline = 1 WHERE email = ? AND password = ?",
       [email, password]
     );
 
