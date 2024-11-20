@@ -17,6 +17,8 @@ const Chat = () => {
     // Listener pour les nouveaux messages
     socket.on("message", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+      console.log("Message reçu :", newMessage);
     });
 
     // Clean up on unmount
@@ -24,6 +26,8 @@ const Chat = () => {
       socket.off("message");
     };
   }, []);
+
+  // console.log("Messages :", messages + " " + message);
 
   const sendMessage = () => {
     socket.emit("message", message);
@@ -43,8 +47,8 @@ const Chat = () => {
       <div className="chat-show">
         <div className="chat-area">
           <div className="chat-text">
-            {messages.map((msg, index) => (
-              <p key={index}>{msg}</p>
+            {messages.map((message, index) => (
+              <p key={index}>{message}</p>
             ))}
           </div>
         </div>
@@ -54,6 +58,8 @@ const Chat = () => {
             type="text"
             className="chat-in"
             placeholder="Type something..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           />
           <button className="chat-send" onClick={sendMessage}>
             <img src="chat-submit.svg" alt="Send" />
