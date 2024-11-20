@@ -1,0 +1,29 @@
+name: Sync main to main-copy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push to main-copy
+        run: |
+          git checkout -b main-copy || git checkout main-copy
+          git fetch origin main-copy
+          git reset --hard origin/main-copy  # Récupère l'état actuel de main-copy
+          git merge --allow-unrelated-histories --strategy-option theirs main -m "Sync from main"  # Permet de fusionner malgré les historiques séparés
+          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YxxgSxxl/SAE501-chat.git main-copy
