@@ -24,4 +24,4 @@ jobs:
         run: |
           git checkout -b main-copy || git checkout main-copy
           git merge --no-ff main -m "Sync from main"
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/<USERNAME>/<REPO>.git main-copy
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YxxgSxxl/SAE501-chat.git main-copy
