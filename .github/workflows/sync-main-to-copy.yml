@@ -23,5 +23,6 @@ jobs:
       - name: Push to main-copy
         run: |
           git checkout -b main-copy || git checkout main-copy
+          git pull origin main-copy --rebase # Tirer les changements de la branche distante
           git merge --no-ff main -m "Sync from main"
           git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YxxgSxxl/SAE501-chat.git main-copy
