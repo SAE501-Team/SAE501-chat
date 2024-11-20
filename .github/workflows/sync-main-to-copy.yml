@@ -24,6 +24,6 @@ jobs:
         run: |
           git checkout -b main-copy || git checkout main-copy
           git fetch origin main-copy
-          git reset --hard origin/main-copy  # Récupère l'état actuel de main-copy
-          git merge --strategy-option theirs main -m "Sync from main"  # Favorise les changements de main
-          git push --force https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YxxgSxxl/SAE501-chat.git main-copy
+          git reset --hard origin/main-copy
+          git merge main || git merge --abort
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/YxxgSxxl/SAE501-chat.git main-copy
