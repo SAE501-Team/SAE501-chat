@@ -15,4 +15,14 @@ And after that go to client/components/Chat.jsx to change the url of the Express
 - Securize the chat app and the database
 - Make a shell script to automate the installation
 
+### Dev
+
+For server:
+
+run `make dev`
+
+For client:
+
+run `npm run dev`
+
 ### Made by YxxgSxxl
