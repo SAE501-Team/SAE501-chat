@@ -19,10 +19,8 @@ And after that go to client/components/Chat.jsx to change the url of the Express
 
 For server:
 
-run `make dev`
+run `npm run dev`
 
 For client:
 
 run `npm run dev`
-
-### Made by YxxgSxxl
