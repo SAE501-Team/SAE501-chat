@@ -51,7 +51,10 @@ const Chat = () => {
               <p key={index}>{message}</p>
             ))}
           </div>
+          <div className="chat-blank" />
         </div>
+
+
 
         <div className="chat-br">
           <input

@@ -44,7 +44,7 @@
 .chat-text {
   background-color: #fff;
   color: black;
-  border-radius: 25px;
+  border-radius: 27px;
   height: 105%;
   padding: 10px;
   overflow-y: auto;
@@ -65,6 +65,15 @@
   border-radius: 10px;
 }
 
+.chat-blank {
+  position: absolute;
+  width: calc(100% - 6px);
+  height: 10vh;
+  background: #ffffff;
+  bottom: 1%;
+  z-index: 2;
+}
+
 .chat-br {
   position: relative;
   padding: 3px;
@@ -72,6 +81,7 @@
   border-radius: 50px;
   display: flex;
   align-items: center;
+  z-index: 3;
 }
 
 .chat-in {
