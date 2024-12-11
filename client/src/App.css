@@ -5,6 +5,11 @@
 }
 
 #root {
-  background-color: aliceblue;
+  background-color: rgb(247, 247, 247);
   height: 100vh;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: inherit;
 }

@@ -4,6 +4,7 @@
   margin: 0 auto;
   position: relative;
   margin-top: 10vh;
+  background-color: inherit;
 }
 
 .chat-show {

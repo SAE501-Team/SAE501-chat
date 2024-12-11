@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const database = require("../utils/db/databaseInit.js");
-const { generateToken } = require("../utils/token/generateToken.js");
+const { storeToken } = require("../utils/token/storeToken.js");
 
 /*
     Enregistre un utilisateur dans la base de donnée
@@ -41,6 +41,16 @@ router.post("/api/register", async (req, res) => {
       "UPDATE users SET isOnline = 1 WHERE email = ? AND password = ?",
       [email, password]
     );
+
+    // Récupère les informations de l'utilisateur
+    const [userDataAfterSignUp] = await database.query(
+      "SELECT id, username, email, role, isOnline FROM users WHERE id = ? AND email = ?",
+      [id, email]
+    );
+
+    // Enregistre l'utilisateur dans les cookies
+    await storeToken(userDataAfterSignUp, res);
+    console.log("registered");
 
     return res.json({
       success: true,

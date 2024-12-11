@@ -1,9 +1,6 @@
 // dotenv INIT
 require("dotenv").config();
 
-console.log("REACT:", process.env.CLIENTURL);
-console.log("EXPRESS:", process.env.SERVERURL);
-
 // Socket.io INIT
 const { Server } = require("socket.io");
 
@@ -14,11 +11,15 @@ const express = require("express");
 const http = require("http"); // Import du module http
 const cors = require("cors");
 
+// Middleware INIT
+const { authenticateToken } = require("./middlewares/authenticateToken.js");
+
 // Routes INIT
 const registerRouter = require("./routes/register.js");
 const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
-const deleteRouter = require("./routes/delete.js");
+// const deleteRouter = require("./routes/delete-copy.js");
+const getUser = require("./routes/getUser.js");
 
 // Crée une application Express
 const app = express();
@@ -38,16 +39,21 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes INIT
-app.post("/api/", (req, res) => {
-  return res.json({
-    message: "Bienvenue sur le serveur de messagerie socket.io !",
-  });
+app.post("/api/", authenticateToken, async (req, res) => {
+  try {
+    return res.json({
+      message: "Bienvenue sur le serveur de messagerie socket.io !",
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 app.use(registerRouter); // Route register compte
 app.use(loginRouter); // Route login compte
 app.use(logoutRouter); // Route logout compte
-app.use(deleteRouter); // Route delete compte
+// app.use(deleteRouter); // Route delete compte
+app.use(getUser); // Route get user from cookies
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);
@@ -65,10 +71,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Un utilisateur est connecté");
 
-  socket.on("message", (msg) => {
+  socket.on("message", async (msg) => {
+    // TODO: Récupérer utilisateur connecté (localStorage)
     console.log("Message reçu :", msg);
 
-    // Todo: Enregistrement du message dans la base de données
+    // TODO: Enregistrement du message dans la base de données
   });
 
   socket.on("disconnect", () => {
@@ -78,5 +85,6 @@ io.on("connection", (socket) => {
 
 // Démarrer le serveur HTTP
 server.listen(PORT, () => {
+  console.log("REACT chat:", process.env.CLIENTURL);
   console.log(`API listening on http://localhost:${PORT}`);
 });

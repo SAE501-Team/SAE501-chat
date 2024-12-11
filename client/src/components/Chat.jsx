@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "../Chat.css";
 import io from "socket.io-client";
+import "./Chat.css";
 
 const socket = io.connect("http://localhost:3000");
 
@@ -30,7 +30,26 @@ const Chat = () => {
   // console.log("Messages :", messages + " " + message);
 
   const sendMessage = () => {
-    socket.emit("message", message);
+    fetch("http://localhost:3000/api/getuser", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        } else {
+          console.error("User not found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+
+    socket.emit("message", {
+      // user,
+      message,
+    });
     setMessage(""); // Réinitialise le champ
   };
 
@@ -38,7 +57,6 @@ const Chat = () => {
     <div className="chat-w">
       <div className="chat-goat">
         <img src="/goat1.png" alt="" />
-
         <div className="goat2">
           <img src="/goat2.png" alt="" />
         </div>
@@ -54,8 +72,6 @@ const Chat = () => {
           <div className="chat-blank" />
         </div>
 
-
-
         <div className="chat-br">
           <input
             type="text"
@@ -63,6 +79,11 @@ const Chat = () => {
             placeholder="Type something..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage(e.target.value);
+              }
+            }}
           />
           <button className="chat-send" onClick={sendMessage}>
             <img src="chat-submit.svg" alt="Send" />

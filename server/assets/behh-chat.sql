@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : dim. 27 oct. 2024 à 14:15
+-- Généré le : mar. 10 déc. 2024 à 10:01
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -24,29 +24,30 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Structure de la table `users`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `id` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `isOnline` tinyint(1) NOT NULL
+  `role` enum('client','helper') DEFAULT 'client',
+  `isOnline` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `user`
+-- Déchargement des données de la table `users`
 --
 
-INSERT INTO `user` (`id`, `username`, `email`, `password`, `isOnline`) VALUES
-('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI5IiwidXNlcm5hbWUiOiJBbGV4IiwiaWF0IjoxNzI5OTgyODA1LCJleHAiOjE3Mjk5ODY0MDV9.ytdFCNXhyJPirasl66B4HQoWEMnNOeK8FdGcViuA-DI', 'Alex', 'alex@gmail.com', '$2y$10$MKb6fmn4S0u2Ty8l1WziQ.gcTWk53NJ/.sXblmrunO3whsXwLKUAa', 0);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `isOnline`) VALUES
+('5', 'Alex', 'alex@gmail.com', '$2y$10$qTQidVcgaQEPXSjBeoouqeQPrBxMFdt/kZdI7VLQ7B0TXlIcC9xVG', 'helper', 0);
 
 --
--- Déclencheurs `user`
+-- Déclencheurs `users`
 --
 DELIMITER $$
-CREATE TRIGGER `autoFalseWhenUserInserted` BEFORE INSERT ON `user` FOR EACH ROW SET NEW.isOnline = FALSE
+CREATE TRIGGER `autoFalseWhenUserInserted` BEFORE INSERT ON `users` FOR EACH ROW SET NEW.isOnline = FALSE
 $$
 DELIMITER ;
 
@@ -55,9 +56,9 @@ DELIMITER ;
 --
 
 --
--- Index pour la table `user`
+-- Index pour la table `users`
 --
-ALTER TABLE `user`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 COMMIT;
 
