@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from "prop-types";
 import "./Form.css";
 
-const Form = () => {
+const Form = (props) => {
   const [category, setCategory] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    console.log(JSON.stringify(data, null, 2));
+
+    // * Assuming you have a prop called onSubmit to send data to the parent component
+    // eslint-disable-next-line react/prop-types
+    props.onSubmit(data);
+  };
 
   return (
     <div className="form-w">
       <h2>Problème rencontré:</h2>
       <hr />
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-groupchief">
           <div className="form-group">
             {/* <label htmlFor="category">Problème rencontré:</label> */}
@@ -25,17 +37,32 @@ const Form = () => {
               <option value="other">Autre...</option>
             </select>
             {category === "product" && (
-              <div className="form-group">
-                <label htmlFor="product">
-                  Nom du produit:
-                  <i className="form-i">*</i>
-                </label>
-                <select id="product" name="product" required>
-                  <option value="">Sélectionnez un produit</option>
-                  <option value="product1">Produit 1</option>
-                  <option value="product2">Produit 2</option>
-                  <option value="product3">Produit 3</option>
-                </select>
+              <div className="form-mgroup">
+                <div className="form-group">
+                  <label htmlFor="product">
+                    Nom du produit:
+                    <i className="form-i">*</i>
+                  </label>
+                  <select id="product" name="product" required>
+                    <option value="">Sélectionnez un produit</option>
+                    <option value="product1">Produit 1</option>
+                    <option value="product2">Produit 2</option>
+                    <option value="product3">Produit 3</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="product">
+                    Décrivez le problème:
+                    <i className="form-i">*</i>
+                  </label>
+                  <textarea
+                    id="productDetails"
+                    name="productDetails"
+                    style={{ height: "100px" }}
+                    required
+                  ></textarea>
+                </div>
               </div>
             )}
 
@@ -47,8 +74,8 @@ const Form = () => {
                     <i className="form-i">*</i>
                   </label>
                   <textarea
-                    id="productDetails"
-                    name="productDetails"
+                    id="bugDetails"
+                    name="bugDetails"
                     style={{ height: "100px" }}
                     required
                   ></textarea>
@@ -73,8 +100,8 @@ const Form = () => {
                   Que peut-on améliorer ?<i className="form-i">*</i>
                 </label>
                 <textarea
-                  id="productDetails"
-                  name="productDetails"
+                  id="featureDetails"
+                  name="featureDetails"
                   style={{ height: "100px" }}
                   required
                 ></textarea>
