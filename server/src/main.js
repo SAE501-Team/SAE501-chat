@@ -5,7 +5,9 @@ require("dotenv").config();
 const { Server } = require("socket.io");
 
 // app INIT
-const allowOrigins = [process.env.CLIENTURL, process.env.SERVERURL];
+const allowOrigins = process.env.SERVERURL;
+console.log("ALLOW ORIGINS:", allowOrigins);
+
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const http = require("http"); // Import du module http
@@ -20,6 +22,8 @@ const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
 // const deleteRouter = require("./routes/delete-copy.js");
 const getUser = require("./routes/getUser.js");
+const path = require("path");
+const { log } = require("console");
 
 // Crée une application Express
 const app = express();
@@ -28,22 +32,38 @@ const PORT = process.env.PORT || 3000;
 // CORS
 app.use(
   cors({
-    origin: allowOrigins, // Remplace par l'URL de ton client
+    origin: allowOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   })
 );
+
+// Middleware pour servir les fichiers statiques de React
+app.use(express.static(path.join(__dirname, "client")));
+
+// Route pour l'application React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "index.html"));
+});
 
 // Middleware pour traiter les JSON et les cookies
 app.use(express.json());
 app.use(cookieParser());
 
 // Routes INIT
-app.post("/api/", authenticateToken, async (req, res) => {
+app.post("/api/", async (req, res) => {
   try {
     return res.json({
       message: "Bienvenue sur le serveur de messagerie socket.io !",
     });
+  } catch (error) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.post("/api/getuser", authenticateToken, async (req, res) => {
+  try {
+    return res.json({ user: req.cookies?.TOKEN[0] });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
@@ -71,9 +91,17 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Un utilisateur est connecté");
 
-  socket.on("message", async (msg) => {
+  socket.on("joinRoom", (ticketId) => {
+    console.log(`Utilisateur rejoint la room ${ticketId}`);
+    socket.join(ticketId);
+  });
+
+  socket.on("message", async (msgData) => {
     // TODO: Récupérer utilisateur connecté (localStorage)
-    console.log("Message reçu :", msg);
+    const { roomId, message } = msgData;
+    console.log(`Message reçu dans la room ${roomId}:`, message);
+
+    io.to(roomId).emit("message", message);
 
     // TODO: Enregistrement du message dans la base de données
   });

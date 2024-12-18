@@ -83,6 +83,7 @@
   display: flex;
   align-items: center;
   z-index: 3;
+  width: 100%;
 }
 
 .chat-in {
@@ -112,6 +113,7 @@
   justify-content: center;
   align-items: center;
   transition: ease 0.1s;
+  z-index: 4;
 }
 
 .chat-send:active {

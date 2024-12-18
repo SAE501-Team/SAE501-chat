@@ -35,8 +35,8 @@ router.post("/api/login", async (req, res) => {
       [id, email]
     );
 
-    // console.log(storeToken(userData, res));
-    storeToken(userData, res);
+    console.log(storeToken(userData[0], res));
+    storeToken(userData[0], res);
 
     return res.json({
       success: true,

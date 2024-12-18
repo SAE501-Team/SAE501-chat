@@ -7,7 +7,15 @@ import { useState } from "react";
 
 function App() {
   const [isChatEnabled, setIsChatEnabled] = useState(false);
-  const [isFormSubmitted, setIsFormSubmitted] = useState(true);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [formData, setFormData] = useState(null);
+
+  const handleSubmit = (data) => {
+    console.log(data);
+    setFormData(data);
+    setIsFormSubmitted(true);
+    setIsChatEnabled(true);
+  };
 
   return (
     <>
@@ -15,8 +23,8 @@ function App() {
       <Banner />
 
       {/* dynamic */}
-      {isFormSubmitted && <Form />}
-      {isChatEnabled && <Chat />}
+      {!isFormSubmitted && <Form onSubmit={handleSubmit} />}
+      {isChatEnabled && <Chat formData={formData} />}
     </>
   );
 }

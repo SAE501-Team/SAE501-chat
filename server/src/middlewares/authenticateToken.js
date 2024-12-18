@@ -13,7 +13,7 @@ function authenticateToken(req, res, next) {
     console.info(
       `middleware: L'utilisateur ${userToken[0].username} est connecté.`
     );
-
+    req.user = userToken[0];
     next();
   }
 

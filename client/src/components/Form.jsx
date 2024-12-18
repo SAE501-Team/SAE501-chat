@@ -1,19 +1,22 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "./Form.css";
+import { v4 as uuidv4 } from "uuid";
 
-const Form = (props) => {
+const Form = ({ onSubmit }) => {
   const [category, setCategory] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const ticketId = uuidv4();
+
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    console.log(JSON.stringify(data, null, 2));
 
-    // * Assuming you have a prop called onSubmit to send data to the parent component
-    // eslint-disable-next-line react/prop-types
-    props.onSubmit(data);
+    const finalData = { ticketId, ...data };
+
+    onSubmit(finalData);
   };
 
   return (
@@ -23,7 +26,6 @@ const Form = (props) => {
       <form onSubmit={handleSubmit}>
         <div className="form-groupchief">
           <div className="form-group">
-            {/* <label htmlFor="category">Problème rencontré:</label> */}
             <select
               id="category"
               name="category"
@@ -58,7 +60,7 @@ const Form = (props) => {
                   </label>
                   <textarea
                     id="productDetails"
-                    name="productDetails"
+                    name="details"
                     style={{ height: "100px" }}
                     required
                   ></textarea>
@@ -75,7 +77,7 @@ const Form = (props) => {
                   </label>
                   <textarea
                     id="bugDetails"
-                    name="bugDetails"
+                    name="details"
                     style={{ height: "100px" }}
                     required
                   ></textarea>
@@ -101,7 +103,7 @@ const Form = (props) => {
                 </label>
                 <textarea
                   id="featureDetails"
-                  name="featureDetails"
+                  name="details"
                   style={{ height: "100px" }}
                   required
                 ></textarea>
@@ -129,6 +131,9 @@ const Form = (props) => {
       </form>
     </div>
   );
+};
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default Form;
