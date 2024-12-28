@@ -1,5 +1,4 @@
 const express = require("express");
-const database = require("../utils/db/databaseInit.js");
 
 const router = express.Router();
 
@@ -8,15 +7,11 @@ const router = express.Router();
 
     Interconnection entre le React et l'API REST (Express)
 */
-router.get("/api/getuser", async (req, res) => {
+router.post("/api/getuser", async (req, res) => {
   try {
-    console.log("Cookies :", req.cookies);
+    return res.json(req.cookies.behhchat_data);
   } catch (error) {
-    console.error("Erreur lors de la récupération de l'utilisateur :", error);
-    return res.status(500).json({
-      success: false,
-      message: "Erreur lors de la récupération de l'utilisateur.",
-    });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

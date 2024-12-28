@@ -21,7 +21,7 @@ const registerRouter = require("./routes/register.js");
 const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
 // const deleteRouter = require("./routes/delete-copy.js");
-const getUser = require("./routes/getUser.js");
+const getUserRouter = require("./routes/getUser.js");
 const path = require("path");
 const { log } = require("console");
 
@@ -61,19 +61,11 @@ app.post("/api/", async (req, res) => {
   }
 });
 
-app.post("/api/getuser", async (req, res) => {
-  try {
-    return res.json(req.cookies.behhchat_data);
-  } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 app.use(registerRouter); // Route register compte
 app.use(loginRouter); // Route login compte
 app.use(logoutRouter); // Route logout compte
 // app.use(deleteRouter); // Route delete compte
-app.use(getUser); // Route get user from cookies
+app.use(getUserRouter); // Route get user
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);

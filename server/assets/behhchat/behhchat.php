@@ -21,13 +21,13 @@ class BehhChat extends Module
 
     public function install()
     {
-        return parent::install() && 
-               $this->registerHook('actionCustomerAccountAdd') && 
-               $this->registerHook('actionAuthentication') &&
-               $this->registerHook('actionCustomerLogoutAfter') &&
-               $this->registerHook('ModuleRoutes');
+        return parent::install() &&
+            $this->registerHook('actionCustomerAccountAdd') &&
+            $this->registerHook('actionAuthentication') &&
+            $this->registerHook('actionCustomerLogoutAfter') &&
+            $this->registerHook('ModuleRoutes');
     }
-    
+
     public function uninstall()
     {
         return parent::uninstall();
@@ -45,7 +45,7 @@ class BehhChat extends Module
                 'content' => json_encode($data),
             ],
         ];
-        
+
         $context = stream_context_create($options);
 
         // Try/Catch to handle API call errors
@@ -77,25 +77,30 @@ class BehhChat extends Module
     public function hookActionAuthentication($params)
     {
         $customer = $params['customer'];
-                
+
         $data = [
             'id' => $customer->id,
             'email' => $customer->email, // Vérifiez si c'est le hash ou le mot de passe clair
         ];
-    
+
         $this->sendDataToExpress($data, 'api/login');
+
+        $cookieValue = json_encode($data);
+
+        // Créer un cookie nommé 'behhchat_data', qui expire dans 1 heure
+        setcookie('behhchat_data', $cookieValue, time() + 3600, "/", "", false, false);
     }
-    
+
 
     // Logout
     public function hookActionCustomerLogoutAfter($params)
     {
         $customer = $params['customer'];
-    
+
         $data = [
-           'email' => $customer->email, // Email de l'utilisateur
+            'email' => $customer->email, // Email de l'utilisateur
         ];
-    
+
         // Envoie une requête à l'API pour gérer la déconnexion
         $this->sendDataToExpress($data, 'api/logout');
     }
