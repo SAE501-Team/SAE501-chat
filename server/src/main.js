@@ -61,9 +61,9 @@ app.post("/api/", async (req, res) => {
   }
 });
 
-app.post("/api/getuser", authenticateToken, async (req, res) => {
+app.post("/api/getuser", async (req, res) => {
   try {
-    return res.json({ user: req.cookies?.TOKEN[0] });
+    return res.json(req.cookies.behhchat_data);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }

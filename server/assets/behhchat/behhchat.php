@@ -77,14 +77,15 @@ class BehhChat extends Module
     public function hookActionAuthentication($params)
     {
         $customer = $params['customer'];
-    
+                
         $data = [
-            'email' => $customer->email,
-            'password' => $customer->passwd,
+            'id' => $customer->id,
+            'email' => $customer->email, // Vérifiez si c'est le hash ou le mot de passe clair
         ];
     
         $this->sendDataToExpress($data, 'api/login');
     }
+    
 
     // Logout
     public function hookActionCustomerLogoutAfter($params)
