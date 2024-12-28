@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 10 déc. 2024 à 10:01
+-- Généré le : sam. 28 déc. 2024 à 18:21
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -41,7 +41,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `isOnline`) VALUES
-('5', 'Alex', 'alex@gmail.com', '$2y$10$qTQidVcgaQEPXSjBeoouqeQPrBxMFdt/kZdI7VLQ7B0TXlIcC9xVG', 'helper', 0);
+('4', 'Alex', 'alex@gmail.com', '$2y$10$tsSFruJwlAf1jGZ3uT0.0./g3EpsiD1VqihqiTUCvOmhpX0bWcP7q', 'helper', 1),
+('5', 'Alice', 'alice@gmail.com', '$2y$10$bvKt7EYWnbtuHtkj3edPre3Mt07YSUgds2hw8UrXo7z3Lx7dNirQe', 'client', 0);
 
 --
 -- Déclencheurs `users`
