@@ -21,7 +21,7 @@ const registerRouter = require("./routes/register.js");
 const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
 // const deleteRouter = require("./routes/delete-copy.js");
-const getUserRouter = require("./routes/getUser.js");
+const getUserRouter = require("./routes/getuser.js");
 const path = require("path");
 const { log } = require("console");
 

@@ -1,5 +1,7 @@
 const express = require("express");
 
+const database = require("../utils/db/databaseInit.js");
+
 const router = express.Router();
 
 /*
@@ -9,7 +11,18 @@ const router = express.Router();
 */
 router.post("/api/getuser", async (req, res) => {
   try {
-    return res.json(req.cookies.behhchat_data);
+    // Informations de l'utilisateur (cookie)
+    const userCookie = JSON.parse(req.cookies.behhchat_data);
+
+    // Informations de l'utilisateur (liaison bdd chat)
+    const [userData] = await database.query(
+      "SELECT id, email, role FROM users WHERE id = ?",
+      [userCookie.id]
+    );
+
+    const userInfo = userData[0];
+
+    return res.json(userInfo);
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
   }
