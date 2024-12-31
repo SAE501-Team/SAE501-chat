@@ -20,6 +20,7 @@ const logoutRouter = require("./routes/logout.js");
 // const deleteRouter = require("./routes/delete-copy.js");
 const getUserRouter = require("./routes/getuser.js");
 const createTicketRouter = require("./routes/createticket.js");
+const checkOpenTicketRouter = require("./routes/checkOpenTicket.js");
 
 const path = require("path");
 const { log } = require("console");
@@ -66,6 +67,7 @@ app.use(logoutRouter); // Route logout compte
 // app.use(deleteRouter); // Route delete compte
 app.use(getUserRouter); // Route get use
 app.use(createTicketRouter); // Route create room
+app.use(checkOpenTicketRouter); // Route check open room
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);
