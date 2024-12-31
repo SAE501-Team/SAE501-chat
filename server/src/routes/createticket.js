@@ -28,10 +28,7 @@ router.post("/api/createticket", async (req, res) => {
 
     // Si une room ouverte existe, la renvoyer
     if (existingRoom.length > 0) {
-      console.log(
-        "Room already open, returning room details:",
-        existingRoom[0]
-      );
+      console.log("Room already open");
 
       return res.json({ message: "Room already open", room: existingRoom[0] });
     } else {

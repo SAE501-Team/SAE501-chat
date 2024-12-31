@@ -7,14 +7,14 @@ function App() {
   const [isChatEnabled, setIsChatEnabled] = useState(false);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState(null);
-  const [loading, setLoading] = useState(true); // Ajout d'un état pour le chargement initial
+  const [loading, setLoading] = useState(true);
   const [ticketData, setTicketData] = useState(null);
 
   useEffect(() => {
     // Fonction pour vérifier si l'utilisateur a un ticket ouvert
     const checkOpenTicket = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/checkOpenTicket", {
+        const response = await fetch("http://localhost:3000/api/checkopenticket", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -25,7 +25,7 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           if (data.ticket) {
-            setTicketData(data.ticket); // Stocke les données du ticket
+            setTicketData(data.ticket); // Stocke les données du ticket            
             setIsChatEnabled(true);
           }
         }
@@ -36,7 +36,7 @@ function App() {
       }
     };
 
-    checkOpenTicket(); // Appel de la fonction au lancement de l'app
+    checkOpenTicket();
   }, []);
 
   const handleSubmit = (data) => {
@@ -47,7 +47,7 @@ function App() {
   };
 
   if (loading) {
-    return <div>Chargement...</div>; // Affiche un message de chargement si l'état est en cours
+    return <div>Chargement...</div>;
   }
 
   return (
@@ -57,7 +57,8 @@ function App() {
 
       {/* dynamic */}
       {ticketData ? (
-        <Chat formData={ticketData} /> // Redirige directement vers le chat si un ticket est ouvert
+        // Redirige directement vers le chat si un ticket est ouvert
+        <Chat formData={ticketData} />
       ) : !isFormSubmitted ? (
         <Form onSubmit={handleSubmit} />
       ) : (

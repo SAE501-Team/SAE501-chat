@@ -8,7 +8,7 @@ const router = express.Router();
 
     Interconnexion entre React et l'API REST (Express)
 */
-router.post("/api/checkOpenTicket", async (req, res) => {
+router.post("/api/checkopenticket", async (req, res) => {
   try {
     const userCookie = JSON.parse(req.cookies.behhchat_data);
 

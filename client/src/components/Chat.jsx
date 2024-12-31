@@ -101,19 +101,45 @@ const Chat = ({ formData }) => {
 
       <div className="chat-show">
         <div className="chat-area">
+        <button
+          className="close-ticket-btn"
+          style={{ position: "absolute", bottom: 70, left: 20, zIndex: 9999 }}
+          onClick={async () => {
+            const confirmed = window.confirm("Es-tu sûr d'avoir résolu le problème ?");
+            if (confirmed) {
+              try {
+                const response = await fetch("http://localhost:3000/api/closeticket", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ ticketId: formData.ticketId }),
+                  credentials: "include",
+                });
+
+                if (!response.ok) {
+                  throw new Error("Failed to close the ticket");
+                } else {
+                  console.log("Ticket closed successfully");
+                  window.location.reload();
+                }
+              } catch (error) {
+                console.error("Error closing the ticket:", error);
+              }
+            }
+          }}
+        >
+          Problème résolu
+        </button>
           <div className="chat-text">
             {formData && ( // Affiche les informations du ticket
               <div className="chat-ticket">
                 <p>
-
-                  
                   {userData && (
                     <p>
                       <strong>User:</strong> {userData.email} ({userData.role})
                     </p>
                   )}
-
-
                   <strong>Category:</strong> {formData.category}
                 </p>
                 {formData.product && (
