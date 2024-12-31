@@ -6,9 +6,9 @@ import "./Chat.css";
 const socket = io.connect("http://localhost:3000");
 
 const Chat = ({ formData }) => {
+  const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,18 +31,42 @@ const Chat = ({ formData }) => {
 
         // Affichage dans la console ou un alert pour le rôle de l'utilisateur
         console.log(`User role is: ${data.role} (react console)`);
-
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
     };
 
-    fetchUserData();
+    const createRoomTicket = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/createticket", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ticketId: formData.ticketId,
+            category: formData.category,
+            product: formData.product || "",
+            details: formData.details,
+          }),
+          credentials: "include",
+        });
 
-    if (formData.ticketId) {
-      socket.emit("joinRoom", formData.ticketId);
-      console.log("Room joined:", formData.ticketId);      
-    }
+        if (!response.ok) {
+          throw new Error("Failed to create a room");
+        } else {
+          // Join socket room
+          if (formData.ticketId) {
+            socket.emit("joinRoom", formData.ticketId);
+          }
+        }
+      } catch (error) {
+        console.error("Error creating roomTicket:", error);
+      }
+    };
+
+    fetchUserData();
+    createRoomTicket();
 
     // Listener pour les nouveaux messages
     socket.on("message", (newMessage) => {

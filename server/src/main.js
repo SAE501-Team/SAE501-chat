@@ -13,15 +13,14 @@ const express = require("express");
 const http = require("http"); // Import du module http
 const cors = require("cors");
 
-// Middleware INIT
-const { authenticateToken } = require("./middlewares/authenticateToken.js");
-
 // Routes INIT
 const registerRouter = require("./routes/register.js");
 const loginRouter = require("./routes/login.js");
 const logoutRouter = require("./routes/logout.js");
 // const deleteRouter = require("./routes/delete-copy.js");
 const getUserRouter = require("./routes/getuser.js");
+const createTicketRouter = require("./routes/createticket.js");
+
 const path = require("path");
 const { log } = require("console");
 
@@ -65,7 +64,8 @@ app.use(registerRouter); // Route register compte
 app.use(loginRouter); // Route login compte
 app.use(logoutRouter); // Route logout compte
 // app.use(deleteRouter); // Route delete compte
-app.use(getUserRouter); // Route get user
+app.use(getUserRouter); // Route get use
+app.use(createTicketRouter); // Route create room
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);

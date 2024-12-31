@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1
--- Généré le : sam. 28 déc. 2024 à 18:21
--- Version du serveur : 10.4.32-MariaDB
--- Version de PHP : 8.2.12
+-- Hôte : localhost
+-- Généré le : mar. 31 déc. 2024 à 16:28
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,6 +24,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `rooms`
+--
+
+CREATE TABLE `rooms` (
+  `ticketId` varchar(50) NOT NULL,
+  `userId` int(30) NOT NULL,
+  `category` varchar(30) NOT NULL,
+  `product` varchar(255) NOT NULL,
+  `details` text NOT NULL,
+  `isClosed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -37,14 +52,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Déchargement des données de la table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `isOnline`) VALUES
-('4', 'Alex', 'alex@gmail.com', '$2y$10$tsSFruJwlAf1jGZ3uT0.0./g3EpsiD1VqihqiTUCvOmhpX0bWcP7q', 'helper', 1),
-('5', 'Alice', 'alice@gmail.com', '$2y$10$bvKt7EYWnbtuHtkj3edPre3Mt07YSUgds2hw8UrXo7z3Lx7dNirQe', 'client', 0);
-
---
 -- Déclencheurs `users`
 --
 DELIMITER $$
@@ -55,6 +62,12 @@ DELIMITER ;
 --
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `rooms`
+--
+ALTER TABLE `rooms`
+  ADD PRIMARY KEY (`ticketId`);
 
 --
 -- Index pour la table `users`

@@ -24,7 +24,7 @@ router.post("/api/getuser", async (req, res) => {
 
     return res.json(userInfo);
   } catch (error) {
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error (getuser route)" });
   }
 });
 
