@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost
--- Généré le : mar. 31 déc. 2024 à 16:28
+-- Généré le : mer. 01 jan. 2025 à 23:13
 -- Version du serveur : 10.4.28-MariaDB
 -- Version de PHP : 8.2.4
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `behh-chat`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `ticketId` varchar(50) NOT NULL,
+  `userId` int(30) NOT NULL,
+  `content` text NOT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,6 +78,12 @@ DELIMITER ;
 --
 
 --
+-- Index pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Index pour la table `rooms`
 --
 ALTER TABLE `rooms`
@@ -74,6 +94,16 @@ ALTER TABLE `rooms`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
