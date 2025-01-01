@@ -3,14 +3,36 @@ import io from "socket.io-client";
 import PropTypes from "prop-types";
 import "./Chat.css";
 
-const socket = io("http://localhost:3000", { reconnection: true });
-
 const Chat = ({ formData }) => {
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
+    const socket = io("http://localhost:3000", { reconnection: true });
+
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/getMessages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ticketId: formData.ticketId }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Messages:", data);
+          setMessages(data); // Charge les messages dans l'état
+        } else {
+          console.error("Failed to fetch messages");
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
     const fetchUserData = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/getuser", {
@@ -65,6 +87,7 @@ const Chat = ({ formData }) => {
       }
     };
 
+    fetchMessages();
     fetchUserData();
     createRoomTicket();
 
@@ -80,14 +103,34 @@ const Chat = ({ formData }) => {
   }, [formData]);
 
   // Fonction pour envoyer un message
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim()) {
-      socket.emit("message", {
-        message,
-        user: userData,
-        date: new Date(),
-      });
-      setMessage("");
+      const newMessage = {
+        ticketId: formData.ticketId,
+        userId: userData.id, // Ajoute l'ID de l'utilisateur
+        content: message,
+        date: new Date().toISOString(), // Format ISO pour la compatibilité MySQL
+      };
+
+      try {
+        await fetch("http://localhost:3000/api/saveMessage", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newMessage),
+        });
+
+        socket.emit("message", {
+          message: newMessage.content,
+          user: userData,
+          date: newMessage.date,
+        });
+
+        setMessage("");
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
     }
   };
 
@@ -143,22 +186,22 @@ const Chat = ({ formData }) => {
                 <p>
                   {userData && (
                     <p>
-                      <strong>User:</strong> {userData.email} ({userData.role})
+                      <strong>Utilisateur:</strong> {userData.email} (
+                      {userData.role})
                     </p>
                   )}
-                  <strong>Category:</strong> {formData.category}
+                  <strong>Catégorie:</strong> {formData.category}
                 </p>
                 {formData.product && (
                   <p>
-                    <strong>Product:</strong> {formData.product}
+                    <strong>Produit:</strong> {formData.product}
                   </p>
                 )}
                 <p>
-                  <strong>Details:</strong> {formData.details}
+                  <strong>Problème:</strong> {formData.details}
                 </p>
               </div>
             )}
-
             {/* Affichage des messages */}
             {messages.map((msg, index) => (
               <div
@@ -174,10 +217,20 @@ const Chat = ({ formData }) => {
                   alignSelf: msg.local ? "flex-end" : "flex-start",
                 }}
               >
+                {console.log("msg", msg)}
                 <p className="message-text">
-                  <strong>{msg.user?.email || "Unknown"}:</strong> {msg.message}
+                  <strong>
+                    {msg?.username || msg.user?.username || "Unknown"}:
+                  </strong>{" "}
+                  {msg?.content || msg?.message}
                 </p>
-                <p>{msg.timestamp}</p>
+                <p>
+                  {msg.timestamp ||
+                    new Date(msg?.date).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                </p>
               </div>
             ))}
           </div>

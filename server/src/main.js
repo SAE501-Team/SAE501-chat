@@ -22,6 +22,8 @@ const getUserRouter = require("./routes/getUser.js");
 const createTicketRouter = require("./routes/createTicket.js");
 const checkOpenTicketRouter = require("./routes/checkOpenTicket.js");
 const closeTicketRouter = require("./routes/closeTicket.js");
+const saveMessageRouter = require("./routes/saveMessage.js");
+const getMessagesRouter = require("./routes/getMessages.js");
 
 const path = require("path");
 const { log } = require("console");
@@ -70,6 +72,8 @@ app.use(getUserRouter); // Route get use
 app.use(createTicketRouter); // Route create room
 app.use(checkOpenTicketRouter); // Route check open room
 app.use(closeTicketRouter); // Route close room
+app.use(saveMessageRouter); // Route save message
+app.use(getMessagesRouter); // Route get messages
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);
@@ -99,7 +103,7 @@ io.on("connection", (socket) => {
   socket.on("message", ({ message, user, date }) => {
     const rooms = [...socket.rooms].filter((room) => room !== socket.id);
     const currentRoom = rooms[0];
-    console.log("Message reçu dans la room :", currentRoom, ":", message);
+    // console.log("Message reçu dans la room :", currentRoom, ":", message);
 
     if (currentRoom) {
       const timestamp = new Date(date).toLocaleTimeString([], {

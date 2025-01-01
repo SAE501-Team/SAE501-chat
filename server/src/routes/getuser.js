@@ -16,7 +16,7 @@ router.post("/api/getuser", async (req, res) => {
 
     // Informations de l'utilisateur (liaison bdd chat)
     const [userData] = await database.query(
-      "SELECT id, email, role FROM users WHERE id = ?",
+      "SELECT * FROM users WHERE id = ?",
       [userCookie.id]
     );
 
