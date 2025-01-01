@@ -40,7 +40,7 @@ router.post("/api/closeticket", async (req, res) => {
     console.log(`Ticket avec l'ID ${ticketId} fermé avec succès`);
     return res.json({ message: "Ticket closed successfully" });
   } catch (error) {
-    console.error("Erreur lors de la fermeture du ticket:", error); // Log de l'erreur pour déboguer
+    console.error("Erreur lors de la fermeture du ticket:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });

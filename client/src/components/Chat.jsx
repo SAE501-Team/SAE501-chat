@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import PropTypes from "prop-types";
 import "./Chat.css";
 
-const socket = io.connect("http://localhost:3000");
+const socket = io("http://localhost:3000", { reconnection: true });
 
 const Chat = ({ formData }) => {
   const [userData, setUserData] = useState(null);
@@ -101,36 +101,41 @@ const Chat = ({ formData }) => {
 
       <div className="chat-show">
         <div className="chat-area">
-        <button
-          className="close-ticket-btn"
-          style={{ position: "absolute", bottom: 70, left: 20, zIndex: 9999 }}
-          onClick={async () => {
-            const confirmed = window.confirm("Es-tu sûr d'avoir résolu le problème ?");
-            if (confirmed) {
-              try {
-                const response = await fetch("http://localhost:3000/api/closeticket", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ ticketId: formData.ticketId }),
-                  credentials: "include",
-                });
+          <button
+            className="close-ticket-btn"
+            style={{ position: "absolute", bottom: 65, left: 20, zIndex: 9999 }}
+            onClick={async () => {
+              const confirmed = window.confirm(
+                "Es-tu sûr d'avoir résolu le problème ?"
+              );
+              if (confirmed) {
+                try {
+                  const response = await fetch(
+                    "http://localhost:3000/api/closeticket",
+                    {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ ticketId: formData.ticketId }),
+                      credentials: "include",
+                    }
+                  );
 
-                if (!response.ok) {
-                  throw new Error("Failed to close the ticket");
-                } else {
-                  console.log("Ticket closed successfully");
-                  window.location.reload();
+                  if (!response.ok) {
+                    throw new Error("Failed to close the ticket");
+                  } else {
+                    console.log("Ticket closed successfully");
+                    window.location.reload();
+                  }
+                } catch (error) {
+                  console.error("Error closing the ticket:", error);
                 }
-              } catch (error) {
-                console.error("Error closing the ticket:", error);
               }
-            }
-          }}
-        >
-          Problème résolu
-        </button>
+            }}
+          >
+            Problème résolu
+          </button>
           <div className="chat-text">
             {formData && ( // Affiche les informations du ticket
               <div className="chat-ticket">
@@ -154,9 +159,23 @@ const Chat = ({ formData }) => {
             )}
 
             {/* Affichage des messages */}
-            {messages.map((message, index) => (
-              <div key={index}>
-                <p>{message}</p>
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={msg.local ? "message-sent" : "message-received"}
+                style={{
+                  textAlign: msg.local ? "right" : "left",
+                  backgroundColor: msg.local ? "#d1ffe0" : "#f0f0f0",
+                  borderRadius: "10px",
+                  padding: "5px 10px",
+                  margin: "5px 0",
+                  maxWidth: "80%",
+                  alignSelf: msg.local ? "flex-end" : "flex-start",
+                }}
+              >
+                <p>
+                  <strong>{msg.user?.email || "Unknown"}:</strong> {msg.message}
+                </p>
               </div>
             ))}
           </div>

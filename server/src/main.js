@@ -87,19 +87,25 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Un utilisateur est connecté");
 
-  socket.on("joinRoom", (ticketId) => {
-    console.log(`Utilisateur rejoint la room ${ticketId}`);
-    socket.join(ticketId);
+  socket.on("joinRoom", (roomId) => {
+    console.log("Utilisateur rejoint la room !", roomId); // Log ici
+    if (roomId) {
+      socket.join(roomId);
+    } else {
+      console.error("Room ID non fourni !");
+    }
   });
 
-  socket.on("message", async (msgData) => {
-    // TODO: Récupérer utilisateur connecté (localStorage)
-    const { roomId, message } = msgData;
-    console.log(`Message reçu dans la room ${roomId}:`, message);
+  socket.on("message", ({ message, user }) => {
+    const rooms = [...socket.rooms].filter((room) => room !== socket.id); // Exclut la room par défaut
+    const currentRoom = rooms[0]; // Supposons qu'il n'y a qu'une room active par socket
+    console.log("Message reçu dans la room :", currentRoom, ":", message);
 
-    io.to(roomId).emit("message", message);
-
-    // TODO: Enregistrement du message dans la base de données
+    if (currentRoom) {
+      io.to(currentRoom).emit("message", { message, user });
+    } else {
+      console.error("Aucune room active pour ce socket !");
+    }
   });
 
   socket.on("disconnect", () => {
