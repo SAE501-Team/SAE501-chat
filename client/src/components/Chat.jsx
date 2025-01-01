@@ -3,14 +3,14 @@ import io from "socket.io-client";
 import PropTypes from "prop-types";
 import "./Chat.css";
 
+const socket = io("http://localhost:3000", { reconnection: true });
+
 const Chat = ({ formData }) => {
   const [userData, setUserData] = useState(null);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const socket = io("http://localhost:3000", { reconnection: true });
-
     const fetchMessages = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/getMessages", {
@@ -107,9 +107,9 @@ const Chat = ({ formData }) => {
     if (message.trim()) {
       const newMessage = {
         ticketId: formData.ticketId,
-        userId: userData.id, // Ajoute l'ID de l'utilisateur
+        userId: userData.id,
         content: message,
-        date: new Date().toISOString(), // Format ISO pour la compatibilité MySQL
+        date: new Date().toISOString(),
       };
 
       try {
