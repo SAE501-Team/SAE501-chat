@@ -15,7 +15,7 @@
 
 .chat-goat {
   position: absolute;
-  top: -16%;
+  top: -14%;
   left: 50%;
 }
 
@@ -137,6 +137,26 @@
   color: #333;
   background-color: #f0f0f0;
   align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.message-text {
+  max-width: 310px;
+  word-wrap: break-word;
+}
+
+.message-timestamp-sent {
+  color: #004d00;
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.message-timestamp-received {
+  color: #333;
+  font-size: 12px;
+  margin-left: 10px;
 }
 
 

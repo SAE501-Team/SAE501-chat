@@ -84,7 +84,8 @@ const Chat = ({ formData }) => {
     if (message.trim()) {
       socket.emit("message", {
         message,
-        user: userData, // Ajouter les données de l'utilisateur avec le message
+        user: userData,
+        date: new Date(),
       });
       setMessage("");
     }
@@ -173,9 +174,10 @@ const Chat = ({ formData }) => {
                   alignSelf: msg.local ? "flex-end" : "flex-start",
                 }}
               >
-                <p>
+                <p className="message-text">
                   <strong>{msg.user?.email || "Unknown"}:</strong> {msg.message}
                 </p>
+                <p>{msg.timestamp}</p>
               </div>
             ))}
           </div>

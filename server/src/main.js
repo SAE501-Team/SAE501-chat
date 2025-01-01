@@ -96,13 +96,17 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("message", ({ message, user }) => {
-    const rooms = [...socket.rooms].filter((room) => room !== socket.id); // Exclut la room par défaut
-    const currentRoom = rooms[0]; // Supposons qu'il n'y a qu'une room active par socket
+  socket.on("message", ({ message, user, date }) => {
+    const rooms = [...socket.rooms].filter((room) => room !== socket.id);
+    const currentRoom = rooms[0];
     console.log("Message reçu dans la room :", currentRoom, ":", message);
 
     if (currentRoom) {
-      io.to(currentRoom).emit("message", { message, user });
+      const timestamp = new Date(date).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      io.to(currentRoom).emit("message", { message, user, timestamp });
     } else {
       console.error("Aucune room active pour ce socket !");
     }
