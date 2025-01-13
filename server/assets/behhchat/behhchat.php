@@ -40,8 +40,8 @@ class BehhChat extends Module
 
         $options = [
             'http' => [
-                'header' => "Content-Type: application/json\r\n",
-                'method' => 'POST',
+                'header'  => "Content-Type: application/json\r\n",
+                'method'  => 'POST',
                 'content' => json_encode($data),
             ],
         ];
@@ -57,6 +57,19 @@ class BehhChat extends Module
             PrestaShopLogger::addLog('API call failed: ' . $e->getMessage(), 3);
         }
     }
+
+    // Generate random UUID
+    protected function generateUuid4() {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+        );
+    }
+
 
     // Register
     public function hookActionCustomerAccountAdd($params)
@@ -80,7 +93,8 @@ class BehhChat extends Module
 
         $data = [
             'id' => $customer->id,
-            'email' => $customer->email, // Vérifiez si c'est le hash ou le mot de passe clair
+            'email' => $customer->email,
+            // 'idRoom' => $this->generateUuid4()
         ];
 
         $this->sendDataToExpress($data, 'api/login');
@@ -88,7 +102,7 @@ class BehhChat extends Module
         $cookieValue = json_encode($data);
 
         // Créer un cookie nommé 'behhchat_data', qui expire dans 1 heure
-        setcookie('behhchat_data', $cookieValue, time() + 3600, "/", "", false, false);
+        setcookie('behhchat_data', $cookieValue, time() + 3600 * 4, "/", "", false, false);
     }
 
 
@@ -103,5 +117,13 @@ class BehhChat extends Module
 
         // Envoie une requête à l'API pour gérer la déconnexion
         $this->sendDataToExpress($data, 'api/logout');
-    }
+
+        // Remove le cookie behhchat_data
+        if (isset($_COOKIE['behhchat_data'])) {
+            unset($_COOKIE['behhchat_data']);
+            setcookie('behhchat_data', '', -1, '/');
+            return true;
+        } else {
+            return false;
+        }    }
 }
