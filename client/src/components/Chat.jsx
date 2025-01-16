@@ -136,6 +136,8 @@ const Chat = ({ formData }) => {
 
   switch (userData?.role) {
     case "client":
+      console.log("TOTOTOTOTOTOTOTO");
+
       return (
         <div className="chat-w">
           <div className="chat-goat">

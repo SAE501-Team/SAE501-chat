@@ -10,27 +10,31 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [ticketData, setTicketData] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/getuser", {
-          method: "GET",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include",
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setUserData(data);
+        if (!response.ok) {
+          throw new Error(`Erreur API: ${response.status}`);
         }
+
+        const data = await response.json();
+        setUserData(data);
       } catch (error) {
         console.error(
-          "Erreur lors de la récupération des données utilisateur:",
+          "Erreur lors de la récupération des données utilisateur :",
           error
         );
+        setErrorMessage("Impossible de charger les données utilisateur");
       }
     };
 
@@ -47,15 +51,18 @@ function App() {
           }
         );
 
-        if (response.ok) {
-          const data = await response.json();
-          if (data.ticket) {
-            setTicketData(data.ticket); // Stocke les données du ticket
-            setIsChatEnabled(true);
-          }
+        if (!response.ok) {
+          throw new Error(`Erreur API: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (data.ticket) {
+          setTicketData(data.ticket);
+          setIsChatEnabled(true);
         }
       } catch (error) {
-        console.error("Erreur lors de la vérification du ticket:", error);
+        console.error("Erreur lors de la vérification des tickets :", error);
+        setErrorMessage("Impossible de charger les tickets");
       } finally {
         setLoading(false);
       }
@@ -66,7 +73,6 @@ function App() {
   }, []);
 
   const handleSubmit = (data) => {
-    console.log(data);
     setFormData(data);
     setIsFormSubmitted(true);
     setIsChatEnabled(true);
@@ -78,47 +84,19 @@ function App() {
 
   return (
     <>
-      {/* static */}
       <Banner />
-
-      {/* dynamic */}
-      {ticketData ? (
-        // Redirige directement vers le chat si un ticket est ouvert
-        <Chat formData={ticketData} />
-      ) : !isFormSubmitted ? (
-        <Form onSubmit={handleSubmit} />
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {userData && userData.role === "helper" ? (
+        <Chat formData={ticketData || { helperView: true }} />
       ) : (
-        <Chat formData={formData} />
-      )}
-
-      {/* role-based rendering */}
-      {userData && (
         <>
-          {(() => {
-            switch (userData.role) {
-              case "client":
-                return (
-                  <>
-                    {/* static */}
-                    <Banner />
-
-                    {/* dynamic */}
-                    {ticketData ? (
-                      // Redirige directement vers le chat si un ticket est ouvert
-                      <Chat formData={ticketData} />
-                    ) : !isFormSubmitted ? (
-                      <Form onSubmit={handleSubmit} />
-                    ) : (
-                      <Chat formData={formData} />
-                    )}
-                  </>
-                );
-              case "helper":
-                return <div>Helper View</div>;
-              default:
-                return null;
-            }
-          })()}
+          {ticketData ? (
+            <Chat formData={ticketData} />
+          ) : !isFormSubmitted ? (
+            <Form onSubmit={handleSubmit} />
+          ) : (
+            <Chat formData={formData} />
+          )}
         </>
       )}
     </>
