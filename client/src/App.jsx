@@ -9,9 +9,31 @@ function App() {
   const [formData, setFormData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [ticketData, setTicketData] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    // Fonction pour vérifier si l'utilisateur a un ticket ouvert
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/getuser", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUserData(data);
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des données utilisateur:",
+          error
+        );
+      }
+    };
+
     const checkOpenTicket = async () => {
       try {
         const response = await fetch(
@@ -39,6 +61,7 @@ function App() {
       }
     };
 
+    fetchUserData();
     checkOpenTicket();
   }, []);
 
@@ -66,6 +89,37 @@ function App() {
         <Form onSubmit={handleSubmit} />
       ) : (
         <Chat formData={formData} />
+      )}
+
+      {/* role-based rendering */}
+      {userData && (
+        <>
+          {(() => {
+            switch (userData.role) {
+              case "client":
+                return (
+                  <>
+                    {/* static */}
+                    <Banner />
+
+                    {/* dynamic */}
+                    {ticketData ? (
+                      // Redirige directement vers le chat si un ticket est ouvert
+                      <Chat formData={ticketData} />
+                    ) : !isFormSubmitted ? (
+                      <Form onSubmit={handleSubmit} />
+                    ) : (
+                      <Chat formData={formData} />
+                    )}
+                  </>
+                );
+              case "helper":
+                return <div>Helper View</div>;
+              default:
+                return null;
+            }
+          })()}
+        </>
       )}
     </>
   );
