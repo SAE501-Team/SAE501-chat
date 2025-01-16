@@ -24,6 +24,7 @@ const checkOpenTicketRouter = require("./routes/checkOpenTicket.js");
 const closeTicketRouter = require("./routes/closeTicket.js");
 const saveMessageRouter = require("./routes/saveMessage.js");
 const getMessagesRouter = require("./routes/getMessages.js");
+const getRoomsRouter = require("./routes/getRooms.js");
 
 const path = require("path");
 const { log } = require("console");
@@ -74,6 +75,7 @@ app.use(checkOpenTicketRouter); // Route check open room
 app.use(closeTicketRouter); // Route close room
 app.use(saveMessageRouter); // Route save message
 app.use(getMessagesRouter); // Route get messages
+app.use(getRoomsRouter); // Route get rooms
 
 // Crée un serveur HTTP à partir de l'application Express
 const server = http.createServer(app);

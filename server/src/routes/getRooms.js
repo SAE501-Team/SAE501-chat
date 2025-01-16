@@ -8,9 +8,9 @@ const router = express.Router();
 
     Récupération dans la base de données MySQL
 */
-router.get("/api/getrooms", async (req, res) => {
+router.post("/api/getrooms", async (req, res) => {
   try {
-    const rooms = await db.query("SELECT * FROM rooms"); // Adaptez selon votre DB
+    const rooms = await database.query("SELECT * FROM rooms");
     res.json(rooms);
   } catch (error) {
     console.error("Erreur lors de la récupération des rooms :", error);
