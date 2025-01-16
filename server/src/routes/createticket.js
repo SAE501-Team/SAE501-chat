@@ -10,16 +10,22 @@ const router = express.Router();
     Interconnection entre le React et l'API REST (Express)
 */
 router.post("/api/createticket", async (req, res) => {
-  const userCookie = JSON.parse(req.cookies.behhchat_data);
-
-  const userTicketId = req.body["ticketId"];
-  const userId = userCookie.id;
-  const category = req.body["category"];
-  const product = req.body["product"] || "";
-  const details = req.body["details"];
+  let userCookie = null;
 
   try {
-    // console.log({ userTicketId, userId, category, product, details });
+    if (req.cookies.behhchat_data) {
+      userCookie = JSON.parse(req.cookies.behhchat_data);
+    }
+
+    const userTicketId = req.body["ticketId"];
+    const userId = userCookie ? userCookie.id : null;
+    const category = req.body["category"];
+    const product = req.body["product"] || "";
+    const details = req.body["details"];
+
+    if (!userCookie) {
+      return res.status(400).json({ error: "User not authenticated" });
+    }
 
     const [existingRoom] = await database.query(
       "SELECT * FROM rooms WHERE userId = ? AND isClosed = 0 LIMIT 1",
@@ -41,6 +47,7 @@ router.post("/api/createticket", async (req, res) => {
       return res.json({ message: "Room created" });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal Server Error (createroom route)" });
   }
 });

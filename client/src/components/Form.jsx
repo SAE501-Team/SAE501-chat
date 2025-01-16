@@ -82,17 +82,6 @@ const Form = ({ onSubmit }) => {
                     required
                   ></textarea>
                 </div>
-
-                <div className="form-group">
-                  <label htmlFor="product">Images:</label>
-                  <input
-                    type="file"
-                    id="images"
-                    name="images"
-                    accept="image/*"
-                    multiple
-                  />
-                </div>
               </div>
             )}
 

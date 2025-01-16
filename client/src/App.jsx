@@ -14,18 +14,21 @@ function App() {
     // Fonction pour vérifier si l'utilisateur a un ticket ouvert
     const checkOpenTicket = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/checkopenticket", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        const response = await fetch(
+          "http://localhost:3000/api/checkopenticket",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
+        );
 
         if (response.ok) {
           const data = await response.json();
           if (data.ticket) {
-            setTicketData(data.ticket); // Stocke les données du ticket            
+            setTicketData(data.ticket); // Stocke les données du ticket
             setIsChatEnabled(true);
           }
         }
