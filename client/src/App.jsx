@@ -34,7 +34,6 @@ function App() {
           "Erreur lors de la récupération des données utilisateur :",
           error
         );
-        setErrorMessage("Impossible de charger les données utilisateur");
       }
     };
 
@@ -62,7 +61,6 @@ function App() {
         }
       } catch (error) {
         console.error("Erreur lors de la vérification des tickets :", error);
-        setErrorMessage("Impossible de charger les tickets");
       } finally {
         setLoading(false);
       }
@@ -85,7 +83,6 @@ function App() {
   return (
     <>
       <Banner />
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
       {userData && userData.role === "helper" ? (
         <Chat formData={ticketData || { helperView: true }} />
       ) : (
@@ -93,7 +90,14 @@ function App() {
           {ticketData ? (
             <Chat formData={ticketData} />
           ) : !isFormSubmitted ? (
-            <Form onSubmit={handleSubmit} />
+            <>
+              {errorMessage && (
+                <div className="error-message" style={{ color: "red" }}>
+                  {errorMessage}
+                </div>
+              )}
+              <Form onSubmit={handleSubmit} />
+            </>
           ) : (
             <Chat formData={formData} />
           )}

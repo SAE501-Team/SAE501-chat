@@ -136,8 +136,6 @@ const Chat = ({ formData }) => {
 
   switch (userData?.role) {
     case "client":
-      console.log("TOTOTOTOTOTOTOTO");
-
       return (
         <div className="chat-w">
           <div className="chat-goat">
@@ -150,15 +148,7 @@ const Chat = ({ formData }) => {
           <div className="chat-show">
             <div className="chat-area">
               {!userData && (
-                <div
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    marginBottom: "10px",
-                    marginTop: "20px",
-                    fontWeight: "bold",
-                  }}
-                >
+                <div className="error-message">
                   Erreur: Veuillez vous reconnecter à votre compte PrestaShop.
                 </div>
               )}
@@ -357,7 +347,9 @@ const Chat = ({ formData }) => {
       console.log("Chat.jsx default switch case here");
 
       return (
-        <div>Erreur: Veuillez vous reconnecter à votre compte PrestaShop.</div>
+        <div className="error-message">
+          Erreur: Veuillez vous reconnecter à la boutique.
+        </div>
       );
   }
 };
