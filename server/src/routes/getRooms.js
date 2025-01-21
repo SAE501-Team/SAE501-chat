@@ -10,8 +10,9 @@ const router = express.Router();
 */
 router.post("/api/getrooms", async (req, res) => {
   try {
-    const rooms = await database.query("SELECT * FROM rooms");
-    res.json(rooms);
+    const [rows] = await database.query("SELECT * FROM rooms");
+    console.log("Données récupérées :", rows);
+    res.json(rows); // Renvoie uniquement les données, pas la structure de la table
   } catch (error) {
     console.error("Erreur lors de la récupération des rooms :", error);
     res.status(500).json({ error: "Erreur lors de la récupération des rooms" });

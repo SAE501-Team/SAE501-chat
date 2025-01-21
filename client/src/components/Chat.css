@@ -164,6 +164,51 @@
   color: red;
 }
 
+/* CHATHELPER SECTION */
+.tickets-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-item {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.ticket-item:hover {
+  background-color: #e0e0e0;
+  transform: scale(1.02);
+}
+
+.join-ticket-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.join-ticket-btn:hover {
+  background-color: #0056b3;
+}
+
+.join-ticket-btn:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
 
 @media (max-width: 375px) {
   .chat-goat {

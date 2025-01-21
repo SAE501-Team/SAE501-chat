@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Chat from "../../client/src/components/Chat";
+import ChatHelper from "../../client/src/components/ChatHelper";
 import Form from "./components/Form";
 import Banner from "./components/Banner";
 
@@ -84,7 +85,7 @@ function App() {
     <>
       <Banner />
       {userData && userData.role === "helper" ? (
-        <Chat formData={ticketData || { helperView: true }} />
+        <ChatHelper formData={ticketData} />
       ) : (
         <>
           {ticketData ? (
