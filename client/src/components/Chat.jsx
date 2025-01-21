@@ -214,36 +214,50 @@ const Chat = ({ formData }) => {
               </div>
             )}
             {/* Affichage des messages */}
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={msg.local ? "message-received" : "message-sent"}
-                style={{
-                  textAlign: msg.local ? "right" : "left",
-                  backgroundColor: msg.local ? "#d1ffe0" : "#f0f0f0",
-                  borderRadius: "10px",
-                  padding: "5px 10px",
-                  margin: "5px 0 10px 0",
-                  maxWidth: "80%",
-                  alignSelf: msg.local ? "flex-end" : "flex-start",
-                }}
-              >
-                {console.log("msg", msg)}
-                <p className="message-text">
-                  <strong>
-                    {msg?.username || msg.user?.username || "Unknown"}:
-                  </strong>{" "}
-                  {msg?.content || msg?.message}
-                </p>
-                <p>
-                  {msg.timestamp ||
-                    new Date(msg?.date).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                </p>
-              </div>
-            ))}
+            <div className="chat-messages">
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`message ${
+                    msg.username === userData?.username
+                      ? "message-sent"
+                      : "message-received"
+                  }`}
+                  style={{
+                    textAlign:
+                      msg.username === userData?.username ? "right" : "left",
+                    backgroundColor:
+                      msg.username === userData?.username
+                        ? "#f0f0f0"
+                        : "#d1ffe0",
+                    borderRadius: "10px",
+                    padding: "5px 10px",
+                    margin: "5px 0 10px 0",
+                    marginLeft:
+                      msg.username === userData?.username ? "0" : "auto",
+                    maxWidth: "80%",
+                    alignSelf:
+                      msg.username === userData?.username
+                        ? "flex-end"
+                        : "flex-start",
+                  }}
+                >
+                  <p>
+                    <strong>
+                      {msg?.username || msg.user?.username || "Unknown"}:
+                    </strong>{" "}
+                    {msg.content}
+                  </p>
+                  <p style={{ fontSize: "0.8em", color: "gray" }}>
+                    {msg?.timestamp ||
+                      new Date(msg.date).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="chat-blank" />
         </div>
