@@ -272,28 +272,35 @@ const ChatHelper = () => {
                                 <div
                                   key={index}
                                   className={`message ${
-                                    msg.local
+                                    msg.username === userData?.username
                                       ? "message-sent"
                                       : "message-received"
                                   }`}
                                   style={{
-                                    textAlign: msg.local ? "right" : "left",
-                                    backgroundColor: msg.local
-                                      ? "#f0f0f0"
-                                      : "#d1ffe0",
+                                    textAlign:
+                                      msg.username === userData?.username
+                                        ? "right"
+                                        : "left",
+                                    backgroundColor:
+                                      msg.username === userData?.username
+                                        ? "#f0f0f0"
+                                        : "#d1ffe0",
                                     borderRadius: "10px",
                                     padding: "5px 10px",
                                     margin: "5px 0 10px 0",
-                                    marginLeft: msg.local ? "0" : "auto",
+                                    marginLeft:
+                                      msg.username === userData?.username
+                                        ? "0"
+                                        : "auto",
                                     maxWidth: "80%",
-                                    alignSelf: msg.local
-                                      ? "flex-end"
-                                      : "flex-start",
+                                    alignSelf:
+                                      msg.username === userData?.username
+                                        ? "flex-end"
+                                        : "flex-start",
                                   }}
                                 >
                                   <p>
                                     <strong>
-                                      {console.log("msg", msg)}
                                       {msg?.username ||
                                         msg.user?.username ||
                                         "Unknown"}
