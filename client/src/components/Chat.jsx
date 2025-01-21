@@ -24,7 +24,7 @@ const Chat = ({ formData }) => {
         if (response.ok) {
           const data = await response.json();
           console.log("Messages:", data);
-          setMessages(data); // Charge les messages dans l'état
+          setMessages(data);
         } else {
           console.error("Failed to fetch messages");
         }
@@ -90,16 +90,6 @@ const Chat = ({ formData }) => {
     fetchMessages();
     fetchUserData();
     createRoomTicket();
-
-    // Listener pour les nouveaux messages
-    socket.on("message", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log("Message reçu :", newMessage);
-    });
-
-    return () => {
-      socket.off("message");
-    };
   }, [formData]);
 
   // Fonction pour envoyer un message
@@ -110,9 +100,11 @@ const Chat = ({ formData }) => {
         userId: userData.id,
         content: message,
         date: new Date().toISOString(),
+        username: userData.username, // Ajoutez le nom d'utilisateur ici
       };
 
       try {
+        // Envoie du message au serveur pour le sauvegarder
         await fetch("http://localhost:3000/api/saveMessage", {
           method: "POST",
           headers: {
@@ -121,18 +113,23 @@ const Chat = ({ formData }) => {
           body: JSON.stringify(newMessage),
         });
 
+        // Ajoutez immédiatement le message à l'état local pour un affichage instantané
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+        // Émettre le message via Socket.io
         socket.emit("message", {
           message: newMessage.content,
           user: userData,
           date: newMessage.date,
         });
 
-        setMessage("");
+        setMessage(""); // Réinitialiser le champ du message
       } catch (error) {
         console.error("Error sending message:", error);
       }
     }
   };
+
   return (
     <div className="chat-w">
       <div className="chat-goat">
