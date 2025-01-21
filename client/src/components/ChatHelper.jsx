@@ -11,8 +11,79 @@ const ChatHelper = () => {
     localStorage.getItem("selectedTicket") || null
   );
   const [isTicketJoined, setIsTicketJoined] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
+    const handleNewMessage = (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      console.log("Nouveau message reçu :", newMessage);
+    };
+
+    // Ajouter un écouteur pour les messages
+    socket.on("message", handleNewMessage);
+
+    if (isTicketJoined && selectedTicket) {
+      socket.on("message", (newMessage) => {
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        console.log("Nouveau message reçu :", newMessage);
+      });
+
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch("http://localhost:3000/api/getuser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include", // Inclus les cookies pour les sessions
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch user data");
+          }
+
+          const data = await response.json();
+          setUserData(data);
+          console.log("User Data:", data);
+
+          // Affichage dans la console pour le rôle de l'utilisateur
+          console.log(`User role is: ${data.role} (react console)`);
+
+          return data; // Renvoie les données utilisateur
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          throw error; // Relance l'erreur pour la gestion en amont
+        }
+      };
+
+      // Fetch the history of messages when joining the ticket
+      const fetchMessages = async () => {
+        try {
+          const response = await fetch(
+            "http://localhost:3000/api/getMessages",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ticketId: selectedTicket }),
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setMessages(data);
+          } else {
+            console.error("Erreur lors de la récupération des messages");
+          }
+        } catch (error) {
+          console.error("Erreur lors de la récupération des messages :", error);
+        }
+      };
+
+      fetchUserData();
+      fetchMessages();
+    }
+
     const fetchTickets = async () => {
       try {
         const response = await fetch("http://localhost:3000/api/getrooms", {
@@ -36,7 +107,34 @@ const ChatHelper = () => {
     };
 
     fetchTickets();
-  }, []);
+
+    // Fetch the history of messages when joining the ticket
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/getMessages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ticketId: selectedTicket }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setMessages(data);
+        } else {
+          console.error("Erreur lors de la récupération des messages");
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération des messages :", error);
+      }
+    };
+
+    fetchMessages();
+
+    // Cleanup: retirer l'écouteur précédent lorsque le ticket change
+    return () => {
+      socket.off("message", handleNewMessage);
+      setMessages([]);
+    };
+  }, [isTicketJoined, selectedTicket]);
 
   const joinTicket = (ticketId) => {
     socket.emit("joinTicket", ticketId);
@@ -52,16 +150,33 @@ const ChatHelper = () => {
     localStorage.removeItem("selectedTicket");
   };
 
-  const closeTicket = (ticketId) => {
-    // Implement the logic to close the ticket
-    const updatedTickets = tickets.map((ticket) =>
-      ticket.ticketId === ticketId ? { ...ticket, isClosed: true } : ticket
-    );
-    setTickets(updatedTickets);
-    if (selectedTicket === ticketId) {
-      setIsTicketJoined(false);
-      setSelectedTicket(null);
-      localStorage.removeItem("selectedTicket");
+  const sendMessage = async () => {
+    if (currentMessage.trim()) {
+      const newMessage = {
+        ticketId: selectedTicket,
+        userId: userData?.id,
+        content: currentMessage,
+        date: new Date().toISOString(),
+        username: userData?.username,
+      };
+
+      await fetch("http://localhost:3000/api/saveMessage", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newMessage),
+      });
+
+      // Envoyer au serveur
+      socket.emit("message", newMessage);
+
+      // Ajouter le message localement
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...newMessage, local: true },
+      ]);
+      setCurrentMessage(""); // Réinitialise le champ d'entrée
     }
   };
 
@@ -150,6 +265,55 @@ const ChatHelper = () => {
                               </p>
                             </div>
                           </div>
+
+                          {isTicketJoined && (
+                            <div className="chat-messages">
+                              {messages.map((msg, index) => (
+                                <div
+                                  key={index}
+                                  className={`message ${
+                                    msg.local
+                                      ? "message-sent"
+                                      : "message-received"
+                                  }`}
+                                  style={{
+                                    textAlign: msg.local ? "right" : "left",
+                                    backgroundColor: msg.local
+                                      ? "#f0f0f0"
+                                      : "#d1ffe0",
+                                    borderRadius: "10px",
+                                    padding: "5px 10px",
+                                    margin: "5px 0 10px 0",
+                                    marginLeft: msg.local ? "0" : "auto",
+                                    maxWidth: "80%",
+                                    alignSelf: msg.local
+                                      ? "flex-end"
+                                      : "flex-start",
+                                  }}
+                                >
+                                  <p>
+                                    <strong>
+                                      {console.log("msg", msg)}
+                                      {msg?.username ||
+                                        msg.user?.username ||
+                                        "Unknown"}
+                                      :
+                                    </strong>{" "}
+                                    {msg.content}
+                                  </p>
+                                  <p
+                                    style={{ fontSize: "0.8em", color: "gray" }}
+                                  >
+                                    {new Date(msg.date).toLocaleTimeString([], {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    })}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
                           {!ticket.isClosed && (
                             <button
                               className="close-ticket-btn"
@@ -213,12 +377,17 @@ const ChatHelper = () => {
               type="text"
               className="chat-in"
               placeholder="Type something..."
+              value={currentMessage}
+              onChange={(e) => setCurrentMessage(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
-                  // TODO: Implémenter l'envoi de message
+                  sendMessage();
                 }
               }}
             />
+            <button className="chat-send" onClick={sendMessage}>
+              <img src="chat-submit.svg" alt="Send" />
+            </button>
           </div>
         </div>
       </div>

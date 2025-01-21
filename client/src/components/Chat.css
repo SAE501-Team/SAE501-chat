@@ -128,15 +128,18 @@
 }
 
 .message-sent {
-  color: #004d00;
-  background-color: #d1ffe0;
-  align-self: flex-end;
-}
-
-.message-received {
   color: #333;
   background-color: #f0f0f0;
   align-self: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.message-received {
+  color: #004d00;
+  background-color: #d1ffe0;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   justify-content: space-between;

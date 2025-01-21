@@ -217,13 +217,13 @@ const Chat = ({ formData }) => {
             {messages.map((msg, index) => (
               <div
                 key={index}
-                className={msg.local ? "message-sent" : "message-received"}
+                className={msg.local ? "message-received" : "message-sent"}
                 style={{
                   textAlign: msg.local ? "right" : "left",
                   backgroundColor: msg.local ? "#d1ffe0" : "#f0f0f0",
                   borderRadius: "10px",
                   padding: "5px 10px",
-                  margin: "5px 0",
+                  margin: "5px 0 10px 0",
                   maxWidth: "80%",
                   alignSelf: msg.local ? "flex-end" : "flex-start",
                 }}
