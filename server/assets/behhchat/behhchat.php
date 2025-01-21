@@ -84,6 +84,11 @@ class BehhChat extends Module
         ];
 
         $this->sendDataToExpress($data, 'api/register');
+
+        $cookieValue = json_encode($data);
+
+        // Créer un cookie nommé 'behhchat_data', qui expire dans 4 heure
+        setcookie('behhchat_data', $cookieValue, time() + 3600 * 4, "/", "", false, false);
     }
 
     // Login
@@ -101,7 +106,7 @@ class BehhChat extends Module
 
         $cookieValue = json_encode($data);
 
-        // Créer un cookie nommé 'behhchat_data', qui expire dans 1 heure
+        // Créer un cookie nommé 'behhchat_data', qui expire dans 4 heure
         setcookie('behhchat_data', $cookieValue, time() + 3600 * 4, "/", "", false, false);
     }
 

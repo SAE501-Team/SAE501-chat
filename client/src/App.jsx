@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Chat from "../../client/src/components/Chat";
 import ChatHelper from "../../client/src/components/ChatHelper";
 import Form from "./components/Form";
-import Banner from "./components/Banner";
+// import Banner from "./components/Banner";
 
 function App() {
   const [isChatEnabled, setIsChatEnabled] = useState(false);
@@ -12,8 +12,6 @@ function App() {
   const [ticketData, setTicketData] = useState(null);
   const [userData, setUserData] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-
-  
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -85,27 +83,29 @@ function App() {
 
   return (
     <>
-      <Banner />
-      {userData && userData.role === "helper" ? (
-        <ChatHelper formData={ticketData} />
-      ) : (
-        <>
-          {ticketData ? (
-            <Chat formData={ticketData} />
-          ) : !isFormSubmitted ? (
-            <>
-              {errorMessage && (
-                <div className="error-message" style={{ color: "red" }}>
-                  {errorMessage}
-                </div>
-              )}
-              <Form onSubmit={handleSubmit} />
-            </>
-          ) : (
-            <Chat formData={formData} />
-          )}
-        </>
-      )}
+      <div style={{ margin: "100px auto", maxWidth: "800px" }}>
+        {/* <Banner /> */}
+        {userData && userData.role === "helper" ? (
+          <ChatHelper formData={ticketData} />
+        ) : (
+          <>
+            {ticketData ? (
+              <Chat formData={ticketData} />
+            ) : !isFormSubmitted ? (
+              <>
+                {errorMessage && (
+                  <div className="error-message" style={{ color: "red" }}>
+                    {errorMessage}
+                  </div>
+                )}
+                <Form onSubmit={handleSubmit} />
+              </>
+            ) : (
+              <Chat formData={formData} />
+            )}
+          </>
+        )}
+      </div>
     </>
   );
 }
